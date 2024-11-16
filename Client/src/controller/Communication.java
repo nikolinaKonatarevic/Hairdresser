@@ -74,7 +74,7 @@ public class Communication {
         sender.send(request);
         
         Response response = (Response) reciever.recieve();
-        System.out.println("lista " + (List<User>) response.getResult());
+        //System.out.println("lista " + (List<User>) response.getResult());
         if(response.getException() == null )
             return (List<User>) response.getResult();
         else 

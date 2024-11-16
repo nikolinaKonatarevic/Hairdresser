@@ -202,7 +202,7 @@ public class FormCreateNewUser extends javax.swing.JDialog {
             user.setRole(role);
             btnSave.setEnabled(false);
             User u = Communication.getInstance().createUser(user);
-            System.out.println(u);
+            //System.out.println(u);
             if(u == null)
             JOptionPane.showMessageDialog(null,"The system cannot cteate new user", "",JOptionPane.ERROR_MESSAGE);
             else {

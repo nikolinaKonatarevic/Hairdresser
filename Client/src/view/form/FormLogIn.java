@@ -132,7 +132,7 @@ public class FormLogIn extends javax.swing.JFrame {
                 lblError.setText("Invalid username or password. Try again.");
             } else {
                 Communication.getInstance().setCurrentUser(user);
-                System.out.println(user);
+                //System.out.println(user);
                 JOptionPane.showMessageDialog(this, "Welcome "+ user.getFirstname());
                 this.dispose();
                 if(user.getRole().equals("admin"))
@@ -142,8 +142,10 @@ public class FormLogIn extends javax.swing.JFrame {
                 //new FormMain().setVisible(true);
             }
         } catch (ValidatorException ex) {
+            JOptionPane.showMessageDialog(this,ex.getMessage());
             Logger.getLogger(FormLogIn.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this,ex.getMessage());
             Logger.getLogger(FormLogIn.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnLoginActionPerformed

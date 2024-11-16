@@ -65,6 +65,11 @@ public class FormMainAdmin extends javax.swing.JFrame {
 
         jMenuItem2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jMenuItem2.setText("View all Users");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMenuItem2);
 
         jCheckBoxMenuItem2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -157,6 +162,11 @@ public class FormMainAdmin extends javax.swing.JFrame {
         new FormCreateNewUser(this, false).setVisible(true);
         
     }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        new FormViewUsers().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
   
 
