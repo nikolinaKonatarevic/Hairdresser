@@ -7,8 +7,7 @@ package view.form.admin;
 import controller.Communication;
 import domain.User;
 import javax.swing.JFrame;
-
-/**
+/*
  *
  * @author Nikolina
  */

@@ -5,6 +5,7 @@
 package validator.components;
 
 import controller.Communication;
+import domain.Role;
 import domain.User;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -29,7 +30,7 @@ public class RegularValidator implements IValidator {
     }
 
     @Override
-    public void validateCreateNewUser(String firstname, String lastname, String email, String pass, String role) throws ValidatorException {
+    public void validateCreateNewUser(String firstname, String lastname, String email, String pass, Role role) throws ValidatorException {
         if (firstname == null || firstname.isEmpty()) {
             //JOptionPane.showMessageDialog();
             throw new ValidatorException("Firstname field cant be empty");
@@ -73,6 +74,10 @@ public class RegularValidator implements IValidator {
         if (pass.length() == 3) {
             throw new ValidatorException("Password has to contain at least 3 character!");
         }
+        
+        if(role==null){
+             throw new ValidatorException("Role is not selected!");
+        }
 
     }
 
@@ -92,6 +97,53 @@ public class RegularValidator implements IValidator {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    public void validateUpdateUser(Long id, String firstname, String lastname, String email, String pass, Role role) throws ValidatorException {
+        if (firstname == null || firstname.isEmpty()) {
+            //JOptionPane.showMessageDialog();
+            throw new ValidatorException("Firstname field cant be empty");
+        }
+        if (!firstname.matches("[A-Za-z]+")) {
+            throw new ValidatorException("Firstname cannot contain numbers or special characters");
+        }
+        if (firstname.length() > 30) {
+            throw new ValidatorException("Firstname cannot be longer than 30 characters");
+        }
+        if (firstname.length() == 1) {
+            throw new ValidatorException("Firstname has to contain at least 2 character!");
+        }
+        if (lastname == null || lastname.isEmpty()) {
+            throw new ValidatorException("Lastname field cant be empty");
+        }
+        if (!lastname.matches("[A-Za-z]+")) {
+            throw new ValidatorException("Lastname cannot contain numbers or special characters");
+        }
+        if (lastname.length() > 30) {
+            throw new ValidatorException("Lastname cannot be longer than 30 characters");
+        }
+        if (lastname.length() == 1) {
+            throw new ValidatorException("Lastname has to contain at least 1 character!");
+        }
+
+        if (email == null || email.isEmpty()) {
+            throw new ValidatorException("Email field cant be empty");
+        }
+        if (!email.contains("@") || !email.contains(".")) {
+            throw new ValidatorException("Not the right form of email");
+        }
+        
+        if (pass == null || pass.isEmpty()) {
+            throw new ValidatorException("Password field cant be empty");
+        }
+        if (pass.length() == 3) {
+            throw new ValidatorException("Password has to contain at least 3 character!");
+        }
+        
+        if(role==null){
+             throw new ValidatorException("Role is not selected!");
+        }
     }
 
 }

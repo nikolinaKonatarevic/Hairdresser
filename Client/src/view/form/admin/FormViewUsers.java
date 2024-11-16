@@ -4,7 +4,10 @@
  */
 package view.form.admin;
 
+import controller.Communication;
+import domain.Role;
 import domain.User;
+import javax.swing.JOptionPane;
 import view.components.TableModelViewUsers;
 
 /**
@@ -69,8 +72,8 @@ public class FormViewUsers extends javax.swing.JFrame {
             }
         });
 
-        btnMainPage.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        btnMainPage.setText(" Main page");
+        btnMainPage.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        btnMainPage.setText("...");
         btnMainPage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMainPageActionPerformed(evt);
@@ -95,6 +98,11 @@ public class FormViewUsers extends javax.swing.JFrame {
         cmbRole.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Customer" }));
 
         jButton4.setText("Details");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,41 +114,39 @@ public class FormViewUsers extends javax.swing.JFrame {
                     .addComponent(btnSearch)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btnCreateNewUser)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel2)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(txtFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(38, 38, 38)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel4)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(cmbRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addComponent(btnMainPage))
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtLastname, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(txtFirstname, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCreateNewUser)
+                            .addComponent(btnMainPage, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cmbRole, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(50, 50, 50))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 588, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4))
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(btnMainPage, javax.swing.GroupLayout.PREFERRED_SIZE, 12, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(9, 9, 9)
+                .addComponent(btnMainPage, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnCreateNewUser)
-                .addGap(25, 25, 25)
+                .addGap(20, 20, 20)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -158,7 +164,7 @@ public class FormViewUsers extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(32, Short.MAX_VALUE))
         );
 
         pack();
@@ -185,11 +191,27 @@ public class FormViewUsers extends javax.swing.JFrame {
             restriction.setEmail(txtEmail.getText().trim().toLowerCase());
         }
         if ( cmbRole.getSelectedIndex()>-1) {
-            restriction.setRole(cmbRole.getSelectedItem().toString().toLowerCase());
+            restriction.setRole((Role) cmbRole.getSelectedItem());
         }
         
         updateTable();
     }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+        if(tblAllUsers.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this,"Please select user", "No user selected", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        if(tblAllUsers.getSelectedRowCount()>1) {
+            JOptionPane.showMessageDialog(this,"Please select only one user", "Multiple users selected", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        User selectedUser = (User)((TableModelViewUsers) tblAllUsers.getModel()).getUsers().get(tblAllUsers.getSelectedRow());
+        System.out.println(selectedUser); 
+        new FormUserDetail(this, true, selectedUser).setVisible(true);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCreateNewUser;

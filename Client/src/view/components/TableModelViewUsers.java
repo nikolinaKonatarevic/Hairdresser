@@ -5,6 +5,7 @@
 package view.components;
 
 import controller.Communication;
+import domain.Role;
 import domain.User;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -18,9 +19,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class TableModelViewUsers extends AbstractTableModel implements Runnable {
 
-    ArrayList<User> users;
-    private Class[] columnClass = new Class[]{Long.class, String.class, String.class, String.class, String.class};
-    User restriction = null;
+    private ArrayList<User> users;
+    private Class[] columnClass = new Class[]{Long.class, String.class, String.class, String.class, Role.class};
+    private User restriction = null;
 
     public TableModelViewUsers() {
 
@@ -109,11 +110,9 @@ public class TableModelViewUsers extends AbstractTableModel implements Runnable 
             users = (ArrayList<User>) Communication.getInstance().getAllUsers();
 
             if (restriction != null) {
-                //System.out.println(users);
 
-                // Use an iterator to safely remove elements during iteration
                 Iterator<User> iterator = users.iterator();
-
+                // optimize
                 while (iterator.hasNext()) {
                     User user = iterator.next();
 
@@ -135,8 +134,8 @@ public class TableModelViewUsers extends AbstractTableModel implements Runnable 
                         continue;
                     }
 
-                    if (restriction.getRole() != null && !restriction.getRole().isEmpty()
-                            && !user.getRole().toLowerCase().contains(restriction.getRole().toLowerCase())) {
+                    if (restriction.getRole() != null 
+                            && !user.getRole().equals(restriction.getRole())) {
                         iterator.remove();
                     }
                 }
@@ -149,8 +148,14 @@ public class TableModelViewUsers extends AbstractTableModel implements Runnable 
 
     }
 
+    
     public void setRestriction(User restriction) {
         this.restriction = restriction;
     }
 
+    public ArrayList<User> getUsers() {
+        return users;
+    }
+    
+  
 }
