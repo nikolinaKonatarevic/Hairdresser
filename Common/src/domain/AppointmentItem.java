@@ -107,6 +107,14 @@ public class AppointmentItem implements GenericEntity {
 
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
+       String role = rs.getString("u.role");
+        Role r;
+        
+        if(role.toLowerCase().equals("admin"))
+            r = Role.ADMIN;
+        else 
+            r = Role.CUSTOMER;
+
         return new AppointmentItem(rs.getLong("ai.id"),
                 new Appointment(rs.getLong("a.appointment_id"), rs.getTimestamp("a.date_time_start").toLocalDateTime(), rs.getTimestamp("a.date_time_start").toLocalDateTime(),
                         rs.getBigDecimal("a.total_price"), rs.getString("a.status"),
@@ -115,7 +123,7 @@ public class AppointmentItem implements GenericEntity {
                                 rs.getDate("h.date_of_employment").toLocalDate(), rs.getString("h.status")),
                         new User(rs.getLong("u.user_id"), rs.getString("u.firstname"),
                                 rs.getString("u.lastname"), rs.getString("u.email"),
-                                rs.getString("u.password"), rs.getString("u.role"))), rs.getBigDecimal("ai.price"),
+                                rs.getString("u.password"), r)), rs.getBigDecimal("ai.price"),
                 new ServiceType(rs.getLong("s.service_id"), rs.getString("s.name"), rs.getString("s.description"), rs.getDouble("s.duration"), rs.getBigDecimal("s.price")));
     }
 

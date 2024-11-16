@@ -20,12 +20,12 @@ public class User implements GenericEntity{
     private String lastname;
     private String email;
     private String password;
-    private String role;
+    private Role role;
 
     public User() {
     }
 
-    public User(long id, String firstname, String lastname, String email, String password, String role) {
+    public User(long id, String firstname, String lastname, String email, String password, Role role) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -74,11 +74,11 @@ public class User implements GenericEntity{
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 
@@ -148,7 +148,16 @@ public class User implements GenericEntity{
 
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
-        return new User(rs.getLong("user_id"), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("password"), rs.getString("role"));
+        String role = rs.getString("role");
+        Role r;
+        
+        if(role.toLowerCase().equals("admin"))
+            r = Role.ADMIN;
+        else 
+            r = Role.CUSTOMER;
+        
+        
+        return new User(rs.getLong("user_id"), rs.getString("firstname"), rs.getString("lastname"), rs.getString("email"), rs.getString("password"), r);
     }
 
     @Override
@@ -161,9 +170,8 @@ public class User implements GenericEntity{
         User u = (User) object;
         return "firstname = '"+ u.getFirstname()+"',"
                 +"lastname ='"+u.getLastname()+"',"
-                +"email='"+ u.getEmail()+"',"
                 +"password = '"+ u.getPassword()+"',"
-                + "role ="+u.getRole()+"'";
+                + "role = '"+ u.getRole()+"'";
                 
     }
     
