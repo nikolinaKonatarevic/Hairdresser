@@ -68,7 +68,7 @@ public class HandleClientThread extends Thread {
             case LOGIN: 
                 
                 User user = (User) request.getArgument();
-                System.out.println(user);
+                //System.out.println(user);
                 response.setResult(Controller.getInstance().login(user));
                 
                 if(LoggedUsersSingleton.getInstance().getAllLoggedUsers().contains(response.getResult())) {
@@ -80,7 +80,7 @@ public class HandleClientThread extends Thread {
                     activeUser = (User) response.getResult();
                     LoggedUsersSingleton.getInstance().addLoggedUser(activeUser);
                 }
-                System.out.println(activeUser);
+                //System.out.println(activeUser);
                 break;
                 
             case CREATE: 

@@ -26,7 +26,7 @@ public class Login extends AbstractGenericOperation{
 
     @Override
     protected void executeOperation(Object param) throws Exception {
-        System.out.println(param);
+        //System.out.println(param);
         User user = (User)param;
         List<User> users = repository.get((User)param);
         System.out.println(user);
