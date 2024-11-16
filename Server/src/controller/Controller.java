@@ -9,6 +9,7 @@ import operation.AbstractGenericOperation;
 import operation.login.Login;
 import operation.users.CreateUser;
 import operation.users.GetUsers;
+import operation.users.UpdateUser;
 
 /**
  *
@@ -48,6 +49,16 @@ public class Controller {
         return null;
     }
 
+     public Object update(Object object) throws Exception {
+        if (object instanceof User) {
+            return updateUser(object);
+        }
+        
+        return null;
+    }
+
+     
+     
        private Object getUsers(Object object) throws Exception {
         operation = new GetUsers();
         operation.execute(object);
@@ -62,5 +73,12 @@ public class Controller {
         
     }
 
+    private Object updateUser(Object object) throws Exception {
+        operation = new UpdateUser();
+        operation.execute(object);
+        return((UpdateUser)operation).getUser();
+    }
+
+   
     
 }

@@ -91,6 +91,9 @@ public class HandleClientThread extends Thread {
             case GET:
                 response.setResult(Controller.getInstance().get(request.getArgument()));
                 break;
+            case UPDATE: 
+                response.setResult(Controller.getInstance().update(request.getArgument()));
+                break;
         }
         } catch (Exception ex){
             ex.printStackTrace();

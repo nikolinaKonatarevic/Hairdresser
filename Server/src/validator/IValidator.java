@@ -15,4 +15,5 @@ public interface IValidator {
     public void validateLogin(User user) throws ValidatorException;
 
     public void validateUser(User user) throws ValidatorException;
+
 }
