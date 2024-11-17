@@ -5,7 +5,7 @@
 package view.form.admin;
 
 import controller.Communication;
-import domain.Role;
+import domain.RoleEnum;
 import domain.User;
 import javax.swing.JOptionPane;
 import view.components.TableModelViewUsers;
@@ -191,7 +191,7 @@ public class FormViewUsers extends javax.swing.JFrame {
             restriction.setEmail(txtEmail.getText().trim().toLowerCase());
         }
         if ( cmbRole.getSelectedIndex()>-1) {
-            restriction.setRole((Role) cmbRole.getSelectedItem());
+            restriction.setRole((RoleEnum) cmbRole.getSelectedItem());
         }
         
         updateTable();

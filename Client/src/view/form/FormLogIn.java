@@ -6,7 +6,7 @@ package view.form;
 
 
 import controller.Communication;
-import domain.Role;
+import domain.RoleEnum;
 import domain.User;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -136,7 +136,7 @@ public class FormLogIn extends javax.swing.JFrame {
                 //System.out.println(user);
                 JOptionPane.showMessageDialog(this, "Welcome "+ user.getFirstname());
                 this.dispose();
-                if(user.getRole().equals(Role.ADMIN))
+                if(user.getRole().equals(RoleEnum.ADMIN))
                 new FormMainAdmin().setVisible(true);
                 else
                 new FormMainCustomer().setVisible(true);

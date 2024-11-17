@@ -4,7 +4,7 @@
  */
 package validator;
 
-import domain.Role;
+import domain.RoleEnum;
 
 /**
  *
@@ -14,8 +14,10 @@ public interface IValidator {
 
     public void validateLogin(String username, String password)throws ValidatorException;
 
-    public void validateCreateNewUser(String firstname, String lastname, String email, String pass, Role role) throws ValidatorException;
+    public void validateCreateNewUser(String firstname, String lastname, String email, String pass, RoleEnum role) throws ValidatorException;
 
-    public void validateUpdateUser(Long id, String firstname, String lastname, String email, String password, Role role) throws ValidatorException;
+    public void validateUpdateUser(Long id, String firstname, String lastname, String email, String password, RoleEnum role) throws ValidatorException;
+
+    public void validateDeleteUser(long id) throws ValidatorException;
     
 }

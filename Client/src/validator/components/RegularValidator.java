@@ -5,9 +5,12 @@
 package validator.components;
 
 import controller.Communication;
-import domain.Role;
+import domain.Appointment;
+import domain.RoleEnum;
 import domain.User;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import validator.IValidator;
 import validator.ValidatorException;
@@ -30,7 +33,7 @@ public class RegularValidator implements IValidator {
     }
 
     @Override
-    public void validateCreateNewUser(String firstname, String lastname, String email, String pass, Role role) throws ValidatorException {
+    public void validateCreateNewUser(String firstname, String lastname, String email, String pass, RoleEnum role) throws ValidatorException {
         if (firstname == null || firstname.isEmpty()) {
             //JOptionPane.showMessageDialog();
             throw new ValidatorException("Firstname field cant be empty");
@@ -100,7 +103,7 @@ public class RegularValidator implements IValidator {
     }
 
     @Override
-    public void validateUpdateUser(Long id, String firstname, String lastname, String email, String pass, Role role) throws ValidatorException {
+    public void validateUpdateUser(Long id, String firstname, String lastname, String email, String pass, RoleEnum role) throws ValidatorException {
         if (firstname == null || firstname.isEmpty()) {
             //JOptionPane.showMessageDialog();
             throw new ValidatorException("Firstname field cant be empty");
@@ -137,12 +140,26 @@ public class RegularValidator implements IValidator {
         if (pass == null || pass.isEmpty()) {
             throw new ValidatorException("Password field cant be empty");
         }
-        if (pass.length() == 3) {
+        if (pass.length() < 3) {
             throw new ValidatorException("Password has to contain at least 3 character!");
         }
         
         if(role==null){
              throw new ValidatorException("Role is not selected!");
+        }
+    }
+
+    @Override
+    public void validateDeleteUser(long id) throws ValidatorException{
+        try {
+            List<Appointment> appointments = Communication.getInstance().getAllAppointments();
+            if(appointments==null) 
+                return;
+            for (Appointment a : appointments)
+                if(a.getUser().getId()==id)
+                    throw new ValidatorException("System cannot delete this user since has on or more appointments");
+        } catch (Exception ex) {
+            Logger.getLogger(RegularValidator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

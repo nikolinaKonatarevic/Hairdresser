@@ -5,7 +5,7 @@
 package view.form.admin;
 
 import controller.Communication;
-import domain.Role;
+import domain.RoleEnum;
 import domain.User;
 import java.awt.Frame;
 import java.util.logging.Level;
@@ -102,6 +102,11 @@ public class FormUserDetail extends javax.swing.JDialog {
         btnDel.setBackground(new java.awt.Color(204, 204, 204));
         btnDel.setFont(new java.awt.Font("SansSerif", 0, 12)); // NOI18N
         btnDel.setText("Delete");
+        btnDel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDelActionPerformed(evt);
+            }
+        });
 
         btnEdit.setText("Edit");
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
@@ -203,7 +208,7 @@ public class FormUserDetail extends javax.swing.JDialog {
         String lastname = txtLastname.getText().trim();
         String email = selectedUser.getEmail();
         String password = txtPassword.getText().trim();
-        Role role = (Role) cmbRole.getSelectedItem();
+        RoleEnum role = (RoleEnum) cmbRole.getSelectedItem();
         User u = null;
 
         if (selectedUser.getFirstname().equals(firstname) && selectedUser.getLastname().equals(lastname)
@@ -221,30 +226,30 @@ public class FormUserDetail extends javax.swing.JDialog {
 
         firstname = firstname.substring(0, 1).toUpperCase() + firstname.substring(1);
         lastname = lastname.substring(0, 1).toUpperCase() + lastname.substring(1);
-        
+
         selectedUser.setFirstname(firstname);
         selectedUser.setLastname(lastname);
         selectedUser.setPassword(password);
         selectedUser.setRole(role);
-        
+
         try {
-             u = Communication.getInstance().updateUser(selectedUser);
+            u = Communication.getInstance().updateUser(selectedUser);
         } catch (Exception ex) {
             ex.getStackTrace();
         }
-        
-        if (u == null){
-            JOptionPane.showMessageDialog(this, "The system cannot update the user", "", JOptionPane.ERROR_MESSAGE );
+
+        if (u == null) {
+            JOptionPane.showMessageDialog(this, "The system cannot update the user", "", JOptionPane.ERROR_MESSAGE);
         } else {
-        JOptionPane.showMessageDialog(this, "The system successfully updated the user", "", JOptionPane.INFORMATION_MESSAGE );
-        txtFirstname.setEnabled(false);
-        txtLastname.setEnabled(false);
-        txtPassword.setEnabled(false);
-        cmbRole.setEnabled(false);
-        btnSave.setVisible(false);
-        btnEdit.setVisible(true);
-        btnDel.setVisible(false);
-       
+            JOptionPane.showMessageDialog(this, "The system successfully updated the user", "", JOptionPane.INFORMATION_MESSAGE);
+            txtFirstname.setEnabled(false);
+            txtLastname.setEnabled(false);
+            txtPassword.setEnabled(false);
+            cmbRole.setEnabled(false);
+            btnSave.setVisible(false);
+            btnEdit.setVisible(true);
+            btnDel.setVisible(false);
+
         }
 
     }//GEN-LAST:event_btnSaveActionPerformed
@@ -256,13 +261,38 @@ public class FormUserDetail extends javax.swing.JDialog {
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         btnSave.setVisible(true);
         btnDel.setVisible(true);
-        
+        btnEdit.setVisible(false);
+
         txtFirstname.setEnabled(true);
         txtLastname.setEnabled(true);
         txtPassword.setEnabled(true);
         cmbRole.setEnabled(true);
 
     }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnDelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDelActionPerformed
+        int x = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm delete", JOptionPane.YES_NO_OPTION);
+
+        if (x == 0) {
+            try {
+                validator.validateDeleteUser(selectedUser.getId());
+            } catch (ValidatorException ex) {
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Unsuccesfull", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            try {
+                Communication.getInstance().deleteUser(selectedUser);
+                JOptionPane.showMessageDialog(this, "The system succesfully deleted the user", "Succesful", JOptionPane.INFORMATION_MESSAGE);
+                this.dispose();
+            } catch (Exception ex) {
+                Logger.getLogger(FormUserDetail.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+
+    }//GEN-LAST:event_btnDelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -286,7 +316,7 @@ public class FormUserDetail extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
-        cmbRole.setModel(new DefaultComboBoxModel<>(Role.values()));
+        cmbRole.setModel(new DefaultComboBoxModel<>(RoleEnum.values()));
         txtId.setText(String.valueOf(selectedUser.getId()));
         txtFirstname.setText(selectedUser.getFirstname());
         txtLastname.setText(selectedUser.getLastname());
@@ -302,6 +332,6 @@ public class FormUserDetail extends javax.swing.JDialog {
         btnSave.setVisible(false);
         setLocationRelativeTo(null);
         setResizable(false);
-        
+
     }
 }

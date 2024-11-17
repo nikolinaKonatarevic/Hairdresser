@@ -5,7 +5,7 @@
 package view.components;
 
 import controller.Communication;
-import domain.Role;
+import domain.RoleEnum;
 import domain.User;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -20,7 +20,7 @@ import javax.swing.table.AbstractTableModel;
 public class TableModelViewUsers extends AbstractTableModel implements Runnable {
 
     private ArrayList<User> users;
-    private Class[] columnClass = new Class[]{Long.class, String.class, String.class, String.class, Role.class};
+    private Class[] columnClass = new Class[]{Long.class, String.class, String.class, String.class, RoleEnum.class};
     private User restriction = null;
 
     public TableModelViewUsers() {

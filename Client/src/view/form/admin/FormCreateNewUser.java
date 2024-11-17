@@ -5,7 +5,7 @@
 package view.form.admin;
 
 import controller.Communication;
-import domain.Role;
+import domain.RoleEnum;
 import domain.User;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -204,7 +204,7 @@ public class FormCreateNewUser extends javax.swing.JDialog {
             String lastname = txtLastname.getText().trim();
             String email = txtEmail.getText().trim();
             String pass = txtPassword.getText().trim();
-            Role role =  (Role) cmbRole.getSelectedItem();
+            RoleEnum role =  (RoleEnum) cmbRole.getSelectedItem();
 
             validator.validateCreateNewUser(firstname, lastname, email, pass, role);
 
@@ -254,9 +254,10 @@ public class FormCreateNewUser extends javax.swing.JDialog {
 
     private void prepareForm() {
         this.rootPane.setDefaultButton(btnSave);
-        cmbRole.setModel(new DefaultComboBoxModel(Role.values()));
+        cmbRole.setModel(new DefaultComboBoxModel(RoleEnum.values()));
         setResizable(false);
         setLocationRelativeTo(null);
+        lblError.setVisible(false);
 
     }
 }

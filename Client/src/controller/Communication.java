@@ -9,6 +9,7 @@ import communication.Reciever;
 import communication.Request;
 import communication.Response;
 import communication.Sender;
+import domain.Appointment;
 import domain.User;
 import java.io.IOException;
 import java.net.Socket;
@@ -105,5 +106,24 @@ public class Communication {
             throw response.getException();
         }
     }
+
+    public List<Appointment> getAllAppointments() throws Exception {
+         Request request = new Request(Operation.GET, new Appointment());
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if(response.getException()!=null)
+            throw response.getException();
+        else return (List<Appointment>) response.getResult();
+    }
+
+    public void deleteUser(User selectedUser) throws Exception {
+        Request request = new Request(Operation.DELETE, selectedUser);
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if(response.getException()!=null)
+            throw response.getException();
+    }
+    
+    
 
 }
