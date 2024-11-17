@@ -22,12 +22,12 @@ public class Hairdresser implements GenericEntity {
     private String firstname;
     private String lastname;
     private LocalDate dateOfEmpleyment;
-    private String status;
+    private HairdresserStatusEnum status;
 
     public Hairdresser() {
     }
 
-    public Hairdresser(long id, String firstname, String lastname, LocalDate dateOfEmpleyment, String status) {
+    public Hairdresser(long id, String firstname, String lastname, LocalDate dateOfEmpleyment, HairdresserStatusEnum status) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfEmpleyment = dateOfEmpleyment;
@@ -67,11 +67,11 @@ public class Hairdresser implements GenericEntity {
         this.dateOfEmpleyment = dateOfEmpleyment;
     }
 
-    public String getStatus() {
+    public HairdresserStatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(HairdresserStatusEnum status) {
         this.status = status;
     }
 
@@ -143,7 +143,15 @@ public class Hairdresser implements GenericEntity {
 
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
-        return new Hairdresser(rs.getLong("hairdresser_id"), rs.getString("firstname"), rs.getString("lastname"), rs.getDate("date_of_employment").toLocalDate(), rs.getString("status"));
+        String status = rs.getString("status");
+        HairdresserStatusEnum s = null;
+        if(status.toLowerCase().equals("active"))
+            s = HairdresserStatusEnum.ACTIVE;
+        if(status.toLowerCase().equals("vacation"))
+            s = HairdresserStatusEnum.VACATION;
+        if(status.toLowerCase().equals("sick_leave"))
+            s = HairdresserStatusEnum.SICK_LEAVE;
+        return new Hairdresser(rs.getLong("hairdresser_id"), rs.getString("firstname"), rs.getString("lastname"), rs.getDate("date_of_employment").toLocalDate(), s);
     }
 
     @Override

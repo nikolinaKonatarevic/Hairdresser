@@ -18,8 +18,8 @@ import java.util.Objects;
  *
  * @author Nikolina
  */
-public class Appointment implements GenericEntity{
-    
+public class Appointment implements GenericEntity {
+
     private long id;
     private LocalDateTime dateTimeStart;
     private LocalDateTime createdOn;
@@ -27,7 +27,7 @@ public class Appointment implements GenericEntity{
     private String status;
     private Hairdresser hairdresser;
     private User user;
-    private List<AppointmentItem> items; 
+    private List<AppointmentItem> items;
 
     public Appointment() {
     }
@@ -41,16 +41,12 @@ public class Appointment implements GenericEntity{
         this.hairdresser = hairdresser;
         this.user = user;
         items = new ArrayList<>();
-        
-    }
 
-    
+    }
 
     public long getId() {
         return id;
     }
-
-    
 
     public LocalDateTime getDateTimeStart() {
         return dateTimeStart;
@@ -104,26 +100,31 @@ public class Appointment implements GenericEntity{
             return false;
         }
         final Appointment other = (Appointment) obj;
-        if (!Objects.equals(this.id, other.id))
+        if (!Objects.equals(this.id, other.id)) {
             return false;
-        if (!Objects.equals(this.dateTimeStart, other.dateTimeStart))
+        }
+        if (!Objects.equals(this.dateTimeStart, other.dateTimeStart)) {
             return false;
-        if (!Objects.equals(this.createdOn, other.createdOn))
+        }
+        if (!Objects.equals(this.createdOn, other.createdOn)) {
             return false;
-        if (!Objects.equals(this.hairdresser, other.hairdresser))
+        }
+        if (!Objects.equals(this.hairdresser, other.hairdresser)) {
             return false;
-        if (!Objects.equals(this.user, other.user))
+        }
+        if (!Objects.equals(this.user, other.user)) {
             return false;
-        if (!Objects.equals(this.totalPrice, other.totalPrice))
+        }
+        if (!Objects.equals(this.totalPrice, other.totalPrice)) {
             return false;
-        if (!Objects.equals(this.status, other.status))
+        }
+        if (!Objects.equals(this.status, other.status)) {
             return false;
+        }
         return Objects.equals(this.items, this.items);
-        
-        
+
     }
 
-    
     @Override
     public String toString() {
         return "Appointment{" + "id=" + id + ", dateTimeStart=" + dateTimeStart + ", createdOn=" + createdOn + ", totalPrice=" + totalPrice + ", hairdresser=" + hairdresser + ", user=" + user + '}';
@@ -158,39 +159,54 @@ public class Appointment implements GenericEntity{
     @Override
     public String getSelectValues() {
         return "SELECT *"
-                +" FROM appointment AS app INNER JOIN "
-                + "hairdresser AS h ON hairdresser_id = app.hairdresser_id INNER JOIN " 
+                + " FROM appointment AS app INNER JOIN "
+                + "hairdresser AS h ON hairdresser_id = app.hairdresser_id INNER JOIN "
                 + " user AS u ON u.user_id = app.user_id ";
     }
 
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
-          String role = rs.getString("u.role");
-        Role r;
-        
-        if(role.toLowerCase().equals("admin"))
-            r = Role.ADMIN;
-        else 
-            r = Role.CUSTOMER;
-        return new Appointment(rs.getLong("appointment_id"),rs.getTimestamp("date_time_start").toLocalDateTime(),
+
+        String role = rs.getString("u.role");
+        RoleEnum r;
+
+        if (role.toLowerCase().equals("admin")) {
+            r = RoleEnum.ADMIN;
+        } else {
+            r = RoleEnum.CUSTOMER;
+        }
+        String status = rs.getString("h.status");
+
+        HairdresserStatusEnum s = null;
+        if (status.toLowerCase().equals("active")) {
+            s = HairdresserStatusEnum.ACTIVE;
+        }
+        if (status.toLowerCase().equals("vacation")) {
+            s = HairdresserStatusEnum.VACATION;
+        }
+        if (status.toLowerCase().equals("sick_leave")) {
+            s = HairdresserStatusEnum.SICK_LEAVE;
+        }
+
+        return new Appointment(rs.getLong("appointment_id"), rs.getTimestamp("date_time_start").toLocalDateTime(),
                 rs.getTimestamp("date_time_start").toLocalDateTime(), rs.getBigDecimal("total_price"), rs.getString("status"),
-             new Hairdresser (rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"),
-                     rs.getString("h.lastname"),
-                     rs.getDate("h.date_of_employment").toLocalDate(), rs.getString("h.status")),
-                new User (rs.getLong("u.user_id"), rs.getString("u.firstname"),
+                new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"),
+                        rs.getString("h.lastname"),
+                        rs.getDate("h.date_of_employment").toLocalDate(), s),
+                new User(rs.getLong("u.user_id"), rs.getString("u.firstname"),
                         rs.getString("u.lastname"), rs.getString("u.email"),
-                rs.getString("u.password"),r));   
+                        rs.getString("u.password"), r));
     }
 
     @Override
     public String getDeleteAndUpdateCondition(Object object) {
-        return "appointment_id="+ ((Appointment)object).getId();
+        return "appointment_id=" + ((Appointment) object).getId();
     }
 
     @Override
     public String getUpdateSetValues(Object object) {
         Appointment appointment = (Appointment) object;
-        return " date_time_start = '" + Timestamp.valueOf(appointment.getDateTimeStart()) + "', status = '" + appointment.getStatus()+"', hairdresser_id ="+appointment.getHairdresser().getId()+" ";
+        return " date_time_start = '" + Timestamp.valueOf(appointment.getDateTimeStart()) + "', status = '" + appointment.getStatus() + "', hairdresser_id =" + appointment.getHairdresser().getId() + " ";
     }
 
     public String getStatus() {
@@ -208,6 +224,5 @@ public class Appointment implements GenericEntity{
     public void setItems(List<AppointmentItem> items) {
         this.items = items;
     }
-    
-    
+
 }

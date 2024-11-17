@@ -108,19 +108,28 @@ public class AppointmentItem implements GenericEntity {
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
        String role = rs.getString("u.role");
-        Role r;
+        RoleEnum r;
         
         if(role.toLowerCase().equals("admin"))
-            r = Role.ADMIN;
+            r = RoleEnum.ADMIN;
         else 
-            r = Role.CUSTOMER;
+            r = RoleEnum.CUSTOMER;
+        
+         String status = rs.getString("status");
+        HairdresserStatusEnum s = null;
+        if(status.toLowerCase().equals("active"))
+            s = HairdresserStatusEnum.ACTIVE;
+        if(status.toLowerCase().equals("vacation"))
+            s = HairdresserStatusEnum.VACATION;
+        if(status.toLowerCase().equals("sick_leave"))
+            s = HairdresserStatusEnum.SICK_LEAVE;
 
         return new AppointmentItem(rs.getLong("ai.id"),
                 new Appointment(rs.getLong("a.appointment_id"), rs.getTimestamp("a.date_time_start").toLocalDateTime(), rs.getTimestamp("a.date_time_start").toLocalDateTime(),
                         rs.getBigDecimal("a.total_price"), rs.getString("a.status"),
                         new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"),
                                 rs.getString("h.lastname"),
-                                rs.getDate("h.date_of_employment").toLocalDate(), rs.getString("h.status")),
+                                rs.getDate("h.date_of_employment").toLocalDate(), s),
                         new User(rs.getLong("u.user_id"), rs.getString("u.firstname"),
                                 rs.getString("u.lastname"), rs.getString("u.email"),
                                 rs.getString("u.password"), r)), rs.getBigDecimal("ai.price"),

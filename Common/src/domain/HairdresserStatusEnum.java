@@ -8,6 +8,7 @@ package domain;
  *
  * @author Nikolina
  */
-public enum Role {
-    ADMIN, CUSTOMER
+public enum HairdresserStatusEnum {
+    
+    ACTIVE , SICK_LEAVE , VACATION 
 }

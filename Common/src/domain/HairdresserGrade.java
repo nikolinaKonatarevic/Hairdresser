@@ -147,8 +147,16 @@ public class HairdresserGrade implements GenericEntity{
 
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
+         String status = rs.getString("h.status");
+        HairdresserStatusEnum s = null;
+        if(status.toLowerCase().equals("active"))
+            s = HairdresserStatusEnum.ACTIVE;
+        if(status.toLowerCase().equals("vacation"))
+            s = HairdresserStatusEnum.VACATION;
+        if(status.toLowerCase().equals("sick_leave"))
+            s = HairdresserStatusEnum.SICK_LEAVE;
         return new HairdresserGrade(new Grade(rs.getLong("g.grade_id"),rs.getString("g.name"), rs.getString("g.description"), rs.getBigDecimal("g.salary")), 
-                new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"), rs.getString("h.lastname"),rs.getDate("h.date_of_employment").toLocalDate() ,rs.getString(" h.status")),
+                new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"), rs.getString("h.lastname"),rs.getDate("h.date_of_employment").toLocalDate() ,s),
                 rs.getDate("hg.date_Start").toLocalDate(),rs.getDate("hg.date_end").toLocalDate() ,rs.getBigDecimal("hg.salary"));
         
     }
