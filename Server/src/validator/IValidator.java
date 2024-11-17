@@ -16,4 +16,6 @@ public interface IValidator {
 
     public void validateUser(User user) throws ValidatorException;
 
+    public void validateDeleteUser(long id) throws ValidatorException;
+
 }

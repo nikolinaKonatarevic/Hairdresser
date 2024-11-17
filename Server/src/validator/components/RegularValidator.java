@@ -43,4 +43,11 @@ public class RegularValidator implements IValidator {
         }
     }
 
+    @Override
+    public void validateDeleteUser(long id) throws ValidatorException{
+        if (id == -1) {
+            throw new ValidatorException("ID is not known");
+        }
+    }
+
 }

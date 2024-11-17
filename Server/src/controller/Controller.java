@@ -8,6 +8,7 @@ import domain.User;
 import operation.AbstractGenericOperation;
 import operation.login.Login;
 import operation.users.CreateUser;
+import operation.users.DeleteUser;
 import operation.users.GetUsers;
 import operation.users.UpdateUser;
 
@@ -57,7 +58,12 @@ public class Controller {
         return null;
     }
 
-     
+     public Object delete(Object object) throws Exception {
+        if(object instanceof User)
+            return deleteUser(object);
+        
+        else return null;
+    }
      
        private Object getUsers(Object object) throws Exception {
         operation = new GetUsers();
@@ -78,6 +84,14 @@ public class Controller {
         operation.execute(object);
         return((UpdateUser)operation).getUser();
     }
+
+    private Object deleteUser(Object object) throws Exception {
+        operation = new DeleteUser();
+        operation.execute(object);
+        return ((DeleteUser)operation).isFlag();
+    }
+
+    
 
    
     

@@ -94,6 +94,9 @@ public class HandleClientThread extends Thread {
             case UPDATE: 
                 response.setResult(Controller.getInstance().update(request.getArgument()));
                 break;
+            case DELETE:
+                response.setResult(Controller.getInstance().delete(request.getArgument()));
+                break;
         }
         } catch (Exception ex){
             ex.printStackTrace();
