@@ -7,7 +7,10 @@ package validator.components;
 import controller.Communication;
 import domain.Appointment;
 import domain.RoleEnum;
+import domain.ServiceType;
 import domain.User;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -162,5 +165,45 @@ public class RegularValidator implements IValidator {
             Logger.getLogger(RegularValidator.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public void validateDate(LocalDate date) throws ValidatorException {
+        if(date.isBefore(LocalDate.now()))
+            throw new ValidatorException("Chosen date is in the past");
+    }
+
+    @Override
+    public void validateAppointment(int indexH, int indexSH, Date date,  List<ServiceType> items) throws ValidatorException {
+        if(indexH==-1){
+            throw new ValidatorException("Please select the hairdresser");
+        }
+        if(items == null || items.isEmpty()){
+            throw new ValidatorException("Please select at least one service");
+        }
+        if(date==null){
+            throw new ValidatorException("Please select the date");
+            
+        }
+        if(indexSH==-1){
+            throw new ValidatorException("Please select the startHour");
+        }
+        
+    }
+
+    @Override
+    public void validateDate() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void validateAppointment(Object selectedItem, Object selectedItem0, Date date) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+   
+
+    
+
+    
 
 }

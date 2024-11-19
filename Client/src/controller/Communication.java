@@ -10,6 +10,9 @@ import communication.Request;
 import communication.Response;
 import communication.Sender;
 import domain.Appointment;
+import domain.AppointmentItem;
+import domain.Hairdresser;
+import domain.ServiceType;
 import domain.User;
 import java.io.IOException;
 import java.net.Socket;
@@ -115,6 +118,17 @@ public class Communication {
             throw response.getException();
         else return (List<Appointment>) response.getResult();
     }
+    
+    public List<AppointmentItem> getAllAppointmentItems() throws Exception{
+        Request request = new Request(Operation.GET, new AppointmentItem());
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if (response.getException() == null) {
+            return (List<AppointmentItem>) response.getResult();
+        } else {
+            throw response.getException();
+        }
+    }
 
     public void deleteUser(User selectedUser) throws Exception {
         Request request = new Request(Operation.DELETE, selectedUser);
@@ -122,6 +136,36 @@ public class Communication {
         Response response = (Response) reciever.recieve();
         if(response.getException()!=null)
             throw response.getException();
+    }
+
+    public List<Hairdresser> getAllHairdressers() throws Exception {
+        Request request = new Request(Operation.GET, new Hairdresser());
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if(response.getException()!=null)
+            throw response.getException();
+        System.out.println(response.getResult());
+        return (List<Hairdresser>) response.getResult();
+    }
+
+    public List<ServiceType> getAlllServiceTypes() throws Exception {
+         Request request = new Request(Operation.GET, new ServiceType());
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if(response.getException()!=null)
+            throw response.getException();
+        else return (List<ServiceType>) response.getResult();
+    }
+
+    public Appointment createAppointment(Appointment appointment) throws Exception{
+         Request request = new Request(Operation.CREATE, appointment);
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if (response.getException() == null) {
+            return (Appointment) response.getResult();
+        } else {
+            throw response.getException();
+        }
     }
     
     

@@ -114,7 +114,10 @@ public class FormMainCustomer extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
     private void jCheckBoxMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem2ActionPerformed
-        // TODO add your handling code here:
+
+            new FormNewAppointment().setVisible(true);
+            this.dispose(); 
+        
     }//GEN-LAST:event_jCheckBoxMenuItem2ActionPerformed
 
     
