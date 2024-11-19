@@ -111,15 +111,17 @@ public class Communication {
     }
 
     public List<Appointment> getAllAppointments() throws Exception {
-         Request request = new Request(Operation.GET, new Appointment());
+        Request request = new Request(Operation.GET, new Appointment());
         sender.send(request);
         Response response = (Response) reciever.recieve();
-        if(response.getException()!=null)
+        if (response.getException() != null) {
             throw response.getException();
-        else return (List<Appointment>) response.getResult();
+        } else {
+            return (List<Appointment>) response.getResult();
+        }
     }
-    
-    public List<AppointmentItem> getAllAppointmentItems() throws Exception{
+
+    public List<AppointmentItem> getAllAppointmentItems() throws Exception {
         Request request = new Request(Operation.GET, new AppointmentItem());
         sender.send(request);
         Response response = (Response) reciever.recieve();
@@ -134,31 +136,35 @@ public class Communication {
         Request request = new Request(Operation.DELETE, selectedUser);
         sender.send(request);
         Response response = (Response) reciever.recieve();
-        if(response.getException()!=null)
+        if (response.getException() != null) {
             throw response.getException();
+        }
     }
 
     public List<Hairdresser> getAllHairdressers() throws Exception {
         Request request = new Request(Operation.GET, new Hairdresser());
         sender.send(request);
         Response response = (Response) reciever.recieve();
-        if(response.getException()!=null)
+        if (response.getException() != null) {
             throw response.getException();
+        }
         System.out.println(response.getResult());
         return (List<Hairdresser>) response.getResult();
     }
 
     public List<ServiceType> getAlllServiceTypes() throws Exception {
-         Request request = new Request(Operation.GET, new ServiceType());
+        Request request = new Request(Operation.GET, new ServiceType());
         sender.send(request);
         Response response = (Response) reciever.recieve();
-        if(response.getException()!=null)
+        if (response.getException() != null) {
             throw response.getException();
-        else return (List<ServiceType>) response.getResult();
+        } else {
+            return (List<ServiceType>) response.getResult();
+        }
     }
 
-    public Appointment createAppointment(Appointment appointment) throws Exception{
-         Request request = new Request(Operation.CREATE, appointment);
+    public Appointment createAppointment(Appointment appointment) throws Exception {
+        Request request = new Request(Operation.CREATE, appointment);
         sender.send(request);
         Response response = (Response) reciever.recieve();
         if (response.getException() == null) {
@@ -167,7 +173,18 @@ public class Communication {
             throw response.getException();
         }
     }
-    
-    
 
+   
 }
+//    public List<ReadBook> getReadBooks(Member member) throws Exception {
+//        ReadBook rb = new ReadBook();
+//        rb.setMember(member);
+//        Request request = new Request(Operation.GET, rb);
+//        sender.send(request);
+//        Response response = (Response) receiver.receive();
+//        if (response.getException() == null) {
+//            return (List<ReadBook>) response.getResult();
+//        } else {
+//            throw response.getException();
+//        }
+//    }
