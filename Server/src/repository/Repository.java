@@ -4,6 +4,7 @@
  */
 package repository;
 
+import domain.Appointment;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public interface Repository<T> {
     T update (T t) throws Exception;
     boolean delete (T t) throws Exception;
     T getById (T t) throws Exception;
+
+   
 
    
 }
