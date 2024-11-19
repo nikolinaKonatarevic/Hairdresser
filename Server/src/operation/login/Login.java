@@ -29,7 +29,7 @@ public class Login extends AbstractGenericOperation{
         //System.out.println(param);
         User user = (User)param;
         List<User> users = repository.get((User)param);
-        System.out.println(user);
+        //System.out.println(user);
         for(User u: users){
             if(u.getEmail().equals(user.getEmail())
                 && u.getPassword().equals(user.getPassword())){

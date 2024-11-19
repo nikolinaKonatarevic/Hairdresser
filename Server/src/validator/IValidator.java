@@ -4,6 +4,8 @@
  */
 package validator;
 
+import domain.Appointment;
+import domain.AppointmentItem;
 import domain.User;
 
 /**
@@ -17,5 +19,9 @@ public interface IValidator {
     public void validateUser(User user) throws ValidatorException;
 
     public void validateDeleteUser(long id) throws ValidatorException;
+
+    public void validateAppointment(Appointment appointment)throws ValidatorException;
+
+    public void validateAppointmentItem(AppointmentItem appointmentItem) throws ValidatorException;
 
 }

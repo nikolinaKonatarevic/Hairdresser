@@ -4,6 +4,8 @@
  */
 package validator.components;
 
+import domain.Appointment;
+import domain.AppointmentItem;
 import domain.User;
 import validator.IValidator;
 import validator.ValidatorException;
@@ -48,6 +50,26 @@ public class RegularValidator implements IValidator {
         if (id == -1) {
             throw new ValidatorException("ID is not known");
         }
+    }
+
+    @Override
+    public void validateAppointment(Appointment appointment) throws ValidatorException {
+        if(appointment.getDate()==null)
+            throw new ValidatorException("Date field is required");
+        
+        if(appointment.getHairdresser() ==null)
+            throw new ValidatorException("Hairdresser field is required");
+            
+        for (AppointmentItem ai : appointment.getItems())
+            validateAppointmentItem(ai);
+            
+            
+    }
+
+    @Override
+    public void validateAppointmentItem(AppointmentItem appointmentItem) throws ValidatorException {
+        if(appointmentItem.getServiceType()==null)
+            throw new ValidatorException("Service type field is required");
     }
 
 }

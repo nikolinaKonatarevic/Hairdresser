@@ -39,7 +39,7 @@ public class ServerThread extends Thread{
                 clients.add(thread);
                 thread.start();
             } catch (IOException ex) {
-                System.out.println(serverSocket.isClosed());
+               // System.out.println(serverSocket.isClosed());
                 if(serverSocket.isClosed())
                     break;
                 ex.printStackTrace();
@@ -55,7 +55,7 @@ public class ServerThread extends Thread{
             try {
                 client.getSocket().close();
                 iterator.remove();
-                System.out.println("uslo?");
+               // System.out.println("uslo?");
             } catch (IOException ex) {
                 ex.printStackTrace();
             }

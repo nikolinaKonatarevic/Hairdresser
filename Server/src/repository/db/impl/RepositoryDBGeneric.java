@@ -24,7 +24,7 @@ public class RepositoryDBGeneric implements DbRepository<GenericEntity> {
         try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
-            System.out.println(entity);
+            //System.out.println(entity);
             sb.append(entity.getSelectValues());
             String query = sb.toString();
 
@@ -55,6 +55,7 @@ public class RepositoryDBGeneric implements DbRepository<GenericEntity> {
                     .append(")");
             String query = sb.toString();
             Statement statement = connection.createStatement();
+            System.out.println(query);
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
