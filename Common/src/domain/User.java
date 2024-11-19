@@ -131,7 +131,7 @@ public class User implements GenericEntity{
                 .append(email).append("','")
                 .append(password).append("','")
                 .append(role).append("'");
-        System.out.println(sb.toString());
+        //System.out.println(sb.toString());
         return sb.toString();
         
     }

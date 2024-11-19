@@ -102,7 +102,7 @@ public class ServiceType implements GenericEntity{
     
     @Override
     public String toString() {
-        return "ServiceType{" + "id=" + id + ", name=" + name + ", description=" + description + ", duration=" + duration + ", price=" + price + '}';
+        return name;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class ServiceType implements GenericEntity{
 
     @Override
     public String getColumnNamesFromInsert() {
-        return " service_id, name, description, duration, price";
+        return " (service_id, name, description, duration, price)";
     }
 
     @Override
@@ -123,7 +123,7 @@ public class ServiceType implements GenericEntity{
                 .append(description).append("',")
                 .append(duration).append(",")
                 .append(price);
-        System.out.println(sb.toString());
+       // System.out.println(sb.toString());
         return sb.toString();
     }
 

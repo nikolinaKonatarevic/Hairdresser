@@ -80,7 +80,7 @@ public class AppointmentItem implements GenericEntity {
 
     @Override
     public String getColumnNamesFromInsert() {
-        return "(item_id,appointment_id, price, service_id)";
+        return "(appointment_id, price, service_id)";
     }
 
     @Override
@@ -102,11 +102,22 @@ public class AppointmentItem implements GenericEntity {
         return "SELECT *"
                 + " FROM appointmentitem AS ai INNER JOIN "
                 + "appointment AS a ON ai.appointment_id = a.appointment_id "
-                + " INNER JOIN servicetype AS s ON s.service_id = ai.service_id ";
+                + " INNER JOIN hairdresser AS h ON a.hairdresser_id = h.hairdresser_id "
+                + " INNER JOIN servicetype AS s ON s.service_id = ai.service_id "
+                + "INNER JOIN USER AS u ON u.user_id = a.user_id";
     }
 
     @Override
     public GenericEntity getNewObject(ResultSet rs) throws SQLException {
+         String statusA = rs.getString("a.status");
+        AppointmentStatusEnum a =null;
+        
+        if(statusA.toLowerCase().equals("scheduled"))
+            a= AppointmentStatusEnum.SCHEDULED;
+        if(statusA.toLowerCase().equals("finished"))
+            a= AppointmentStatusEnum.FINISHED;
+        if(statusA.toLowerCase().equals("canceled"))
+            a= AppointmentStatusEnum.CANCELED;
        String role = rs.getString("u.role");
         RoleEnum r;
         
@@ -124,9 +135,9 @@ public class AppointmentItem implements GenericEntity {
         if(status.toLowerCase().equals("sick_leave"))
             s = HairdresserStatusEnum.SICK_LEAVE;
 
-        return new AppointmentItem(rs.getLong("ai.id"),
-                new Appointment(rs.getLong("a.appointment_id"), rs.getTimestamp("a.date_time_start").toLocalDateTime(), rs.getTimestamp("a.date_time_start").toLocalDateTime(),
-                        rs.getBigDecimal("a.total_price"), rs.getString("a.status"),
+        return new AppointmentItem(rs.getLong("ai.item_id"),
+                new Appointment(rs.getLong("a.appointment_id"), rs.getDate("a.date").toLocalDate(), rs.getInt("a.start_time"),rs.getInt("a.end_time"),rs.getTimestamp("a.created_on").toLocalDateTime(),
+                        rs.getBigDecimal("a.total_price"), a,
                         new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"),
                                 rs.getString("h.lastname"),
                                 rs.getDate("h.date_of_employment").toLocalDate(), s),

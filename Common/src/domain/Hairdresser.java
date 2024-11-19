@@ -28,6 +28,7 @@ public class Hairdresser implements GenericEntity {
     }
 
     public Hairdresser(long id, String firstname, String lastname, LocalDate dateOfEmpleyment, HairdresserStatusEnum status) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.dateOfEmpleyment = dateOfEmpleyment;
@@ -77,7 +78,7 @@ public class Hairdresser implements GenericEntity {
 
     @Override
     public String toString() {
-        return "Hairdresser{" + "id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", dateOfEmpleyment=" + dateOfEmpleyment + ", status=" + status + '}';
+        return firstname+" "+ lastname;
     }
 
     @Override
@@ -138,7 +139,7 @@ public class Hairdresser implements GenericEntity {
 
     @Override
     public String getSelectValues() {
-        return "select * from hairdresser";
+        return "select h.hairdresser_id, h.firstname, h.lastname, h.date_of_employment, h.status from hairdresser as h";
     }
 
     @Override
