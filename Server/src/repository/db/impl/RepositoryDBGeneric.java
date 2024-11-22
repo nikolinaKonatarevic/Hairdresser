@@ -37,9 +37,10 @@ public class RepositoryDBGeneric implements DbRepository<GenericEntity> {
             return entities;
         } catch (Exception ex) {
             ex.printStackTrace();
+            throw ex;
+
         }
 
-        return null;
     }
 
     @Override
@@ -64,38 +65,44 @@ public class RepositoryDBGeneric implements DbRepository<GenericEntity> {
             }
             statement.close();
             rs.close();
+            System.out.println("Posle rs.close" + query);
             return entity;
+
         } catch (Exception ex) {
+            
             ex.printStackTrace();
+            throw ex;
         }
-        return null;
     }
 
     @Override
     public GenericEntity update(GenericEntity entity) throws Exception {
-        try{
-        Connection connection = DBConnectionFactory.getInstance().getConnection();
-        StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE ")
-                .append(entity.getTableName())
-                .append(" SET ")
-                .append(entity.getUpdateSetValues(entity))
-                .append(" WHERE ")
-                .append(entity.getDeleteAndUpdateCondition(entity));
-        String query = sb.toString();
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
-        statement.close();
-        return entity;
+        try {
+            Connection connection = DBConnectionFactory.getInstance().getConnection();
+            StringBuilder sb = new StringBuilder();
+            sb.append("UPDATE ")
+                    .append(entity.getTableName())
+                    .append(" SET ")
+                    .append(entity.getUpdateSetValues(entity))
+                    .append(" WHERE ")
+                    .append(entity.getDeleteAndUpdateCondition(entity));
+            String query = sb.toString();
+            System.out.println("Posle st.close" + query);
+
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+            statement.close();
+            return entity;
         } catch (Exception ex) {
             ex.printStackTrace();
+            throw ex;
         }
-        return null;
+
     }
 
     @Override
     public boolean delete(GenericEntity entity) throws Exception {
-        try{
+        try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
             sb.append("DELETE FROM ")
@@ -109,13 +116,14 @@ public class RepositoryDBGeneric implements DbRepository<GenericEntity> {
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
+            throw ex;
+
         }
-        return false;
     }
 
     @Override
     public GenericEntity getById(GenericEntity entity) throws Exception {
-        try{
+        try {
             Connection connection = DBConnectionFactory.getInstance().getConnection();
             StringBuilder sb = new StringBuilder();
             sb.append(entity.getSelectValues())
@@ -124,15 +132,16 @@ public class RepositoryDBGeneric implements DbRepository<GenericEntity> {
             String query = sb.toString();
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(query);
-            if(rs.next()){
+            if (rs.next()) {
                 GenericEntity e = entity.getNewObject(rs);
                 return e;
             }
-            
-        } catch (Exception ex){
+            return null;
+        } catch (Exception ex) {
             ex.printStackTrace();
+            throw ex;
+
         }
-        return null;
     }
 
 }

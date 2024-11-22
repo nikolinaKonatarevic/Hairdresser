@@ -25,9 +25,12 @@ public abstract class AbstractGenericOperation {
         preconditions(param);
         startTransaction();
         executeOperation(param);
+            System.out.println("Ovde ne moze doci");
         commitTransaction();
         } catch (Exception e){
+            System.out.println("Uslo je");
             rollbackTransaction();
+            System.out.println("Izaslo je");
             throw e;
         } finally {
             disconnect();

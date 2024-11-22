@@ -5,6 +5,7 @@
 package controller;
 
 import domain.Appointment;
+import domain.AppointmentDTO;
 import domain.AppointmentItem;
 import domain.Hairdresser;
 import domain.ServiceType;
@@ -12,6 +13,7 @@ import domain.User;
 import operation.AbstractGenericOperation;
 import operation.appointment.CreateAppointment;
 import operation.appointment.GetAppointments;
+import operation.appointment.UpdateAppointment;
 import operation.hairdressers.GetHairdressers;
 import operation.login.Login;
 import operation.servicetypes.GetServiceTypes;
@@ -78,6 +80,9 @@ public class Controller {
         if (object instanceof User) {
             return updateUser(object);
         }
+        if(object instanceof AppointmentDTO){
+            return updateAppointment(object);
+        }
 
         return null;
     }
@@ -135,9 +140,15 @@ public class Controller {
     }
 
     private Object createAppointment(Object object) throws Exception {
-operation = new CreateAppointment((Appointment) (object));
+        operation = new CreateAppointment((Appointment) (object));
         operation.execute(object);
         return ((CreateAppointment) operation).getAppointment();
+    }
+
+    private Object updateAppointment(Object object) throws Exception {
+            operation = new UpdateAppointment();
+            operation.execute(object);
+            return ((UpdateAppointment)operation).getAppointment();
     }
 
   
