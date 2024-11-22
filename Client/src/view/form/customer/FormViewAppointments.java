@@ -8,12 +8,14 @@ import controller.Communication;
 import domain.Appointment;
 import domain.User;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import view.components.TableModelAppointments;
 
 /**
@@ -25,6 +27,7 @@ public class FormViewAppointments extends javax.swing.JFrame {
     List<Appointment> allAppointments;
     User user;
     LocalDate date;
+
     /**
      * Creates new form FormViewAppointments
      */
@@ -102,8 +105,18 @@ public class FormViewAppointments extends javax.swing.JFrame {
         });
 
         jButton2.setText("New Appointment");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Details");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setText("...");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -184,14 +197,41 @@ public class FormViewAppointments extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(datePicker!=null){
-        Date dateUnprep = datePicker.getDate();
-        date = dateUnprep.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        }
+        
+            Date dateUnprep = datePicker.getDate();
+            if(dateUnprep ==null){
+                JOptionPane.showConfirmDialog(this, "Please select a date", "No date selected", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            date = dateUnprep.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        
         searchAppointments();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-   
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new FormNewAppointment().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+        if (tblAppointments.getSelectedRow() == -1) {
+            JOptionPane.showMessageDialog(this, "Please select a service", "No service selected", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (tblAppointments.getSelectedRowCount()> 1) {
+            JOptionPane.showMessageDialog(this, "Please select only one service", "Multiple services selected", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        TableModelAppointments model = (TableModelAppointments) tblAppointments.getModel();
+        List<Appointment> app = model.getAppointmnets();
+        int selectedRow = tblAppointments.getSelectedRow();
+        Appointment selectedAppointment = app.get(selectedRow);
+        //System.out.println(selectedAppointment);
+        new FormAppointmentDetails(this, true, selectedAppointment).setVisible(true);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser datePicker;
@@ -210,21 +250,22 @@ public class FormViewAppointments extends javax.swing.JFrame {
     private javax.swing.JTable tblAppointments;
     // End of variables declaration//GEN-END:variables
 
-    private void prepareForm() {
+    public void prepareForm() {
         user = Communication.getInstance().getCurrentUser();
-        lblUser1.setText(user.getFirstname()+" "+ user.getLastname());
+        lblUser1.setText(user.getFirstname() + " " + user.getLastname());
         getAllAppointmentsByUser();
         populateTable();
     }
 
     private void getAllAppointmentsByUser() {
-         allAppointments = new ArrayList<>();
+        allAppointments = new ArrayList<>();
         try {
             List<Appointment> pivot;
             pivot = Communication.getInstance().getAllAppointments();
             for (Appointment appointment : pivot) {
-                if(appointment.getUser().getId()==user.getId())
+                if (appointment.getUser().getId() == user.getId() && !appointment.getDate().isBefore(LocalDate.now())) {
                     allAppointments.add(appointment);
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(FormNewAppointment.class.getName()).log(Level.SEVERE, null, ex);
@@ -242,10 +283,10 @@ public class FormViewAppointments extends javax.swing.JFrame {
         List<Appointment> searchedApp = new ArrayList<>();
         for (Appointment allAppointment : allAppointments) {
             //System.out.println(date);
-           // System.out.println(allAppointment.getDate());
-            if(allAppointment.getDate().equals(date))
-                
+            // System.out.println(allAppointment.getDate());
+            if (allAppointment.getDate().equals(date)) {
                 searchedApp.add(allAppointment);
+            }
         }
         TableModelAppointments model = (TableModelAppointments) tblAppointments.getModel();
         model.setAppointmnets(searchedApp);

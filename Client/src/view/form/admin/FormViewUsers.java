@@ -209,7 +209,7 @@ public class FormViewUsers extends javax.swing.JFrame {
         }
         
         User selectedUser = (User)((TableModelViewUsers) tblAllUsers.getModel()).getUsers().get(tblAllUsers.getSelectedRow());
-        System.out.println(selectedUser); 
+        //System.out.println(selectedUser); 
         new FormUserDetail(this, true, selectedUser).setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 

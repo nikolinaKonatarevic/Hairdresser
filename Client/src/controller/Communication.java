@@ -10,6 +10,7 @@ import communication.Request;
 import communication.Response;
 import communication.Sender;
 import domain.Appointment;
+import domain.AppointmentDTO;
 import domain.AppointmentItem;
 import domain.Hairdresser;
 import domain.ServiceType;
@@ -165,6 +166,17 @@ public class Communication {
 
     public Appointment createAppointment(Appointment appointment) throws Exception {
         Request request = new Request(Operation.CREATE, appointment);
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if (response.getException() == null) {
+            return (Appointment) response.getResult();
+        } else {
+            throw response.getException();
+        }
+    }
+
+    public Appointment updateAppointment(AppointmentDTO dto) throws Exception {
+            Request request = new Request(Operation.UPDATE, dto);
         sender.send(request);
         Response response = (Response) reciever.recieve();
         if (response.getException() == null) {

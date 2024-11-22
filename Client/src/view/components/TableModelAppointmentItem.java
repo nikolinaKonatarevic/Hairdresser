@@ -102,5 +102,12 @@ public class TableModelAppointmentItem extends AbstractTableModel{
         services.removeAll(services);
         fireTableDataChanged();
     }
+
+    public void setServices(ArrayList<ServiceType> services) {
+        this.services = services;     
+        fireTableDataChanged();
+    }
+    
+    
     
 }
