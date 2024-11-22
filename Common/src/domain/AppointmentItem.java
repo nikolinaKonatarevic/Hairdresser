@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  *
@@ -65,7 +66,11 @@ public class AppointmentItem implements GenericEntity {
 
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+        final AppointmentItem other = (AppointmentItem) obj;
+        if (!Objects.equals(this.serviceType, other.serviceType)) {
+            return false;
+        }
+        return true;
     }
 
     @Override

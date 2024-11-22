@@ -230,7 +230,7 @@ public class Appointment implements GenericEntity {
     @Override
     public String getUpdateSetValues(Object object) {
         Appointment appointment = (Appointment) object;
-        return " date = '" + Date.valueOf(appointment.getDate()) + "', start_time = "+ appointment.getStart_time()+ ", end_time = " + appointment.getEnd_time() + ", status = '" + appointment.getStatus() + "', hairdresser_id =" + appointment.getHairdresser().getId() + " ";
+        return " date = '" + Date.valueOf(appointment.getDate()) + "', start_time = "+ appointment.getStart_time()+ ", end_time = " + appointment.getEnd_time() + ", total_price ="+ appointment.getTotalPrice()+ " " ;
     }
 
     public AppointmentStatusEnum getStatus() {
