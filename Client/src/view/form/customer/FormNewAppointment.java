@@ -575,6 +575,7 @@ public class FormNewAppointment extends javax.swing.JFrame {
             hairdressers = Communication.getInstance().getAllHairdressers();
 
             for (Hairdresser h : hairdressers) {
+                if(h.getStatus().toString().toLowerCase().equals("active"))
                 cmbHairdresser.addItem(h);
             }
             cmbHairdresser.setSelectedIndex(-1);

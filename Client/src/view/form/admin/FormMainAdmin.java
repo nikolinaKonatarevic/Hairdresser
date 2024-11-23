@@ -99,11 +99,21 @@ public class FormMainAdmin extends javax.swing.JFrame {
         jCheckBoxMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBoxMenuItem3.setSelected(true);
         jCheckBoxMenuItem3.setText("New Hairdresser");
+        jCheckBoxMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jCheckBoxMenuItem3);
 
         jCheckBoxMenuItem4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jCheckBoxMenuItem4.setSelected(true);
         jCheckBoxMenuItem4.setText("View all Hairdressers");
+        jCheckBoxMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jCheckBoxMenuItem4);
 
         jMenuBar1.add(jMenu4);
@@ -166,6 +176,16 @@ public class FormMainAdmin extends javax.swing.JFrame {
         new FormViewUsers().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jCheckBoxMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem3ActionPerformed
+        new FormNewHairdresser().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jCheckBoxMenuItem3ActionPerformed
+
+    private void jCheckBoxMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem4ActionPerformed
+        new FormViewHairdressers().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jCheckBoxMenuItem4ActionPerformed
 
   
 

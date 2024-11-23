@@ -57,7 +57,7 @@ public class FormLogIn extends javax.swing.JFrame {
 
         jLabel2.setText("Email:");
 
-        txtEmail.setText("nata@gmail.com");
+        txtEmail.setText("nikolina@gmail.com");
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
@@ -74,7 +74,7 @@ public class FormLogIn extends javax.swing.JFrame {
         lblError.setForeground(new java.awt.Color(255, 0, 0));
         lblError.setText("Error");
 
-        txtPassword.setText("nata123");
+        txtPassword.setText("niki123");
         txtPassword.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtPasswordActionPerformed(evt);

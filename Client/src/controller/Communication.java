@@ -186,6 +186,37 @@ public class Communication {
         }
     }
 
+    public Hairdresser createHairdresser(Hairdresser hairdresser) throws Exception {
+          Request request = new Request(Operation.CREATE, hairdresser);
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if (response.getException() == null) {
+            return (Hairdresser) response.getResult();
+        } else {
+            throw response.getException();
+        }
+    }
+
+    public void deleteHairdresser(Hairdresser hairdresser)throws Exception {
+Request request = new Request(Operation.DELETE, hairdresser);
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if (response.getException() != null) {
+            throw response.getException();
+        }
+    }
+
+    public Hairdresser updateHairdresser(Hairdresser hairdresser) throws Exception {
+ Request request = new Request(Operation.UPDATE, hairdresser);
+        sender.send(request);
+        Response response = (Response) reciever.recieve();
+        if (response.getException() == null) {
+            return (Hairdresser) response.getResult();
+        } else {
+            throw response.getException();
+        }
+    }
+
    
 }
 //    public List<ReadBook> getReadBooks(Member member) throws Exception {

@@ -4,6 +4,7 @@
  */
 package validator;
 
+import domain.HairdresserStatusEnum;
 import domain.RoleEnum;
 import domain.ServiceType;
 import java.time.LocalDate;
@@ -29,8 +30,14 @@ public interface IValidator {
 
     public void validateAppointment(int indexH, int indexSH, Date date,  List<ServiceType> items) throws ValidatorException;
 
-    public void validateDate();
+    public void validateDate() throws ValidatorException;
 
-    public void validateAppointment(Object selectedItem, Object selectedItem0, Date date);
+    public void validateAppointment(Object selectedItem, Object selectedItem0, Date date) throws ValidatorException;
+
+    public void validateNewHairdresser(String firstname, String lastname, String JMBG, Date localDate, HairdresserStatusEnum status) throws ValidatorException;
+
+    public void validateDeleteHairdresser(long id) throws ValidatorException;
+
+    public void validateUpdateHairdresser(Long id, String firstname, String lastname, String JMBG, HairdresserStatusEnum status) throws ValidatorException;
     
 }

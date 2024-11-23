@@ -253,6 +253,8 @@ public class FormViewAppointments extends javax.swing.JFrame {
     public void prepareForm() {
         user = Communication.getInstance().getCurrentUser();
         lblUser1.setText(user.getFirstname() + " " + user.getLastname());
+        setLocationRelativeTo(null);
+        setResizable(false);
         getAllAppointmentsByUser();
         populateTable();
     }

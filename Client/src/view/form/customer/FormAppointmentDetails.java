@@ -8,6 +8,7 @@ import controller.Communication;
 import domain.Appointment;
 import domain.AppointmentDTO;
 import domain.AppointmentItem;
+import domain.AppointmentStatusEnum;
 import domain.ServiceType;
 import domain.User;
 import java.awt.Frame;
@@ -101,6 +102,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
         jLabel1 = new javax.swing.JLabel();
         btnSaveService = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -322,6 +324,13 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
             }
         });
 
+        jButton1.setText("Cancel appointment");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -329,7 +338,6 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -365,8 +373,14 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
                                         .addGap(18, 18, 18)
                                         .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(362, 362, 362)
+                        .addGap(177, 177, 177)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
                         .addComponent(btnSaveAppointment)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -399,10 +413,12 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
                     .addComponent(btnRemoveService)
                     .addComponent(btnSaveService)
                     .addComponent(cmbServices, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnSaveAppointment)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnSaveAppointment)
+                    .addComponent(jButton1))
                 .addContainerGap())
         );
 
@@ -605,6 +621,24 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
         btnChangeService.setVisible(true);
     }//GEN-LAST:event_btnCancelDateActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        appointment.setStatus(AppointmentStatusEnum.CANCELED);
+        AppointmentDTO dto = new AppointmentDTO(appointment, null, null);
+        try {
+            appointment = Communication.getInstance().updateAppointment(dto);
+            if(appointment== null){
+                 JOptionPane.showMessageDialog(this, "Appointment isn't canceled", "Not canceled", JOptionPane.ERROR_MESSAGE);
+            return;
+            } else{
+           JOptionPane.showMessageDialog(this, "Successfully canceled");
+            return;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(FormAppointmentDetails.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+    }//GEN-LAST:event_jButton1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddService;
@@ -622,6 +656,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     private javax.swing.JComboBox cmbServices;
     private javax.swing.JComboBox<Integer> cmbStartHour;
     private com.toedter.calendar.JDateChooser datePicker;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -738,9 +773,14 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private void getAppointments() {
-        allAppointments = null;
+        List<Appointment> draft = null;
+        allAppointments = new ArrayList<>();
         try {
-            allAppointments = Communication.getInstance().getAllAppointments();
+            draft = Communication.getInstance().getAllAppointments();
+            for (Appointment a : draft) {
+                if(a.getStatus().equals(AppointmentStatusEnum.SCHEDULED))
+                    allAppointments.add(a);
+            }
         } catch (Exception ex) {
             Logger.getLogger(FormNewAppointment.class.getName()).log(Level.SEVERE, null, ex);
         }
