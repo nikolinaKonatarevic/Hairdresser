@@ -21,20 +21,23 @@ public class Hairdresser implements GenericEntity {
     private long id;
     private String firstname;
     private String lastname;
+    private String JMBG;
     private LocalDate dateOfEmpleyment;
     private HairdresserStatusEnum status;
 
     public Hairdresser() {
     }
 
-    public Hairdresser(long id, String firstname, String lastname, LocalDate dateOfEmpleyment, HairdresserStatusEnum status) {
+    public Hairdresser(long id, String firstname, String lastname, String JMBG, LocalDate dateOfEmpleyment, HairdresserStatusEnum status) {
         this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
+        this.JMBG = JMBG;
         this.dateOfEmpleyment = dateOfEmpleyment;
         this.status = status;
     }
-
+ 
+    
 
     public long getId() {
         return id;
@@ -119,7 +122,7 @@ public class Hairdresser implements GenericEntity {
 
     @Override
     public String getColumnNamesFromInsert() {
-        return "(firstname, lastname,date_Of_Employment,status)";
+        return "(firstname, lastname, JMBG , date_Of_Employment,status)";
     }
 
     @Override
@@ -127,6 +130,7 @@ public class Hairdresser implements GenericEntity {
         StringBuilder sb = new StringBuilder();
         sb.append("'").append(firstname).append("',")
                 .append("'").append(lastname).append("',")
+                .append("'").append(JMBG).append("',")
                 .append("'").append(dateOfEmpleyment).append("',")
                 .append("'").append(status).append("'");
         return sb.toString();
@@ -139,7 +143,7 @@ public class Hairdresser implements GenericEntity {
 
     @Override
     public String getSelectValues() {
-        return "select h.hairdresser_id, h.firstname, h.lastname, h.date_of_employment, h.status from hairdresser as h";
+        return "select h.hairdresser_id, h.firstname, h.lastname, h.JMBG,  h.date_of_employment, h.status from hairdresser as h";
     }
 
     @Override
@@ -152,7 +156,7 @@ public class Hairdresser implements GenericEntity {
             s = HairdresserStatusEnum.VACATION;
         if(status.toLowerCase().equals("sick_leave"))
             s = HairdresserStatusEnum.SICK_LEAVE;
-        return new Hairdresser(rs.getLong("hairdresser_id"), rs.getString("firstname"), rs.getString("lastname"), rs.getDate("date_of_employment").toLocalDate(), s);
+        return new Hairdresser(rs.getLong("hairdresser_id"), rs.getString("firstname"), rs.getString("lastname"),rs.getString("JMBG"), rs.getDate("date_of_employment").toLocalDate(), s);
     }
 
     @Override
@@ -164,11 +168,18 @@ public class Hairdresser implements GenericEntity {
     public String getUpdateSetValues(Object object) {
         Hairdresser hairdresser = (Hairdresser) object;
         StringBuilder sb = new StringBuilder();
-        sb.append("firstaname = '").append(hairdresser.firstname).append("',")
+        sb.append("firstname = '").append(hairdresser.firstname).append("',")
                 .append("lastname = '").append(hairdresser.getLastname()).append("',")
-                .append("date_Of_Employment ='").append(Date.valueOf(hairdresser.getDateOfEmpleyment())).append("',")
                 .append("status = '").append(hairdresser.getStatus()).append("'");
         return sb.toString();
+    }
+
+    public String getJMBG() {
+        return JMBG;
+    }
+
+    public void setJMBG(String JMBG) {
+        this.JMBG = JMBG;
     }
     
     

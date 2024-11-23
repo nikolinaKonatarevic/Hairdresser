@@ -212,10 +212,11 @@ public class Appointment implements GenericEntity {
         }
 
         return new Appointment(rs.getLong("appointment_id"), rs.getDate("date").toLocalDate(),
-                rs.getInt("start_time"), rs.getInt("end_time"), rs.getTimestamp("created_on").toLocalDateTime(),
+                rs.getInt("start_time"), rs.getInt("end_time"),
+                rs.getTimestamp("created_on").toLocalDateTime(),
                 rs.getBigDecimal("total_price"), a,
                 new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"),
-                        rs.getString("h.lastname"),
+                        rs.getString("h.lastname"), rs.getString("h.JMBG"),
                         rs.getDate("h.date_of_employment").toLocalDate(), s),
                 new User(rs.getLong("u.user_id"), rs.getString("u.firstname"),
                         rs.getString("u.lastname"), rs.getString("u.email"),
@@ -230,7 +231,7 @@ public class Appointment implements GenericEntity {
     @Override
     public String getUpdateSetValues(Object object) {
         Appointment appointment = (Appointment) object;
-        return " date = '" + Date.valueOf(appointment.getDate()) + "', start_time = "+ appointment.getStart_time()+ ", end_time = " + appointment.getEnd_time() + ", total_price ="+ appointment.getTotalPrice()+ " " ;
+        return " date = '" + Date.valueOf(appointment.getDate()) + "', start_time = "+ appointment.getStart_time()+ ", end_time = " + appointment.getEnd_time() + ", total_price ="+ appointment.getTotalPrice()+ ", status = '"+ appointment.getStatus()+ "' " ;
     }
 
     public AppointmentStatusEnum getStatus() {

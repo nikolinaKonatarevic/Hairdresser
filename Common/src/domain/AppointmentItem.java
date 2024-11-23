@@ -144,7 +144,7 @@ public class AppointmentItem implements GenericEntity {
                 new Appointment(rs.getLong("a.appointment_id"), rs.getDate("a.date").toLocalDate(), rs.getInt("a.start_time"),rs.getInt("a.end_time"),rs.getTimestamp("a.created_on").toLocalDateTime(),
                         rs.getBigDecimal("a.total_price"), a,
                         new Hairdresser(rs.getLong("h.hairdresser_id"), rs.getString("h.firstname"),
-                                rs.getString("h.lastname"),
+                                rs.getString("h.lastname"), rs.getString("h.JMBG"),
                                 rs.getDate("h.date_of_employment").toLocalDate(), s),
                         new User(rs.getLong("u.user_id"), rs.getString("u.firstname"),
                                 rs.getString("u.lastname"), rs.getString("u.email"),
