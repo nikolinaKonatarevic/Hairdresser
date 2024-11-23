@@ -7,6 +7,7 @@ package operation.appointment;
 import domain.Appointment;
 import domain.AppointmentDTO;
 import domain.AppointmentItem;
+import domain.AppointmentStatusEnum;
 import java.util.List;
 import operation.AbstractGenericOperation;
 import validator.IValidator;
@@ -39,7 +40,7 @@ public class UpdateAppointment extends AbstractGenericOperation{
         List<AppointmentItem> saveList = ((AppointmentDTO)param).getSaveList();
         List<AppointmentItem> deleteList = ((AppointmentDTO)param).getDeleteList();
         
-        
+        if(!appointment.getStatus().equals(AppointmentStatusEnum.CANCELED)){
         for(int i =0 ; i<saveList.size(); i++){
             
             repository.create(saveList.get(i));
@@ -49,7 +50,7 @@ public class UpdateAppointment extends AbstractGenericOperation{
             
             repository.delete(deleteList.get(i));
         }
-        
+        }
         appointment = (Appointment) repository.update(((AppointmentDTO)param).getAppointment());
     
     }

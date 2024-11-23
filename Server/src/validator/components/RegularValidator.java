@@ -6,6 +6,7 @@ package validator.components;
 
 import domain.Appointment;
 import domain.AppointmentItem;
+import domain.Hairdresser;
 import domain.User;
 import validator.IValidator;
 import validator.ValidatorException;
@@ -46,7 +47,7 @@ public class RegularValidator implements IValidator {
     }
 
     @Override
-    public void validateDeleteUser(long id) throws ValidatorException{
+    public void validateDeleteUser(long id) throws ValidatorException {
         if (id == -1) {
             throw new ValidatorException("ID is not known");
         }
@@ -54,22 +55,44 @@ public class RegularValidator implements IValidator {
 
     @Override
     public void validateAppointment(Appointment appointment) throws ValidatorException {
-        if(appointment.getDate()==null)
+        if (appointment.getDate() == null) {
             throw new ValidatorException("Date field is required");
-        
-        if(appointment.getHairdresser() ==null)
+        }
+
+        if (appointment.getHairdresser() == null) {
             throw new ValidatorException("Hairdresser field is required");
-            
-        for (AppointmentItem ai : appointment.getItems())
+        }
+
+        for (AppointmentItem ai : appointment.getItems()) {
             validateAppointmentItem(ai);
-            
-            
+        }
+
     }
 
     @Override
     public void validateAppointmentItem(AppointmentItem appointmentItem) throws ValidatorException {
-        if(appointmentItem.getServiceType()==null)
+        if (appointmentItem.getServiceType() == null) {
             throw new ValidatorException("Service type field is required");
+        }
+    }
+
+    @Override
+    public void validateHairdresser(Hairdresser hairdresser) throws ValidatorException {
+        if (hairdresser.getJMBG() == null) {
+            throw new ValidatorException("Hairdresser has to have JMBG field");
+        }
+        if (hairdresser.getFirstname() == null) {
+            throw new ValidatorException("Hairdresser has to have firstname field");
+        }
+        if (hairdresser.getLastname() == null) {
+            throw new ValidatorException("Hairdresser has to have lastname field");
+        }
+        if (hairdresser.getDateOfEmpleyment() == null) {
+            throw new ValidatorException("Hairdresser has to have date of emplyment field");
+        }
+        if (hairdresser.getStatus() == null) {
+            throw new ValidatorException("Hairdresser has to have status field");
+        }
     }
 
 }

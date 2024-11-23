@@ -14,7 +14,9 @@ import operation.AbstractGenericOperation;
 import operation.appointment.CreateAppointment;
 import operation.appointment.GetAppointments;
 import operation.appointment.UpdateAppointment;
+import operation.hairdressers.CreateHairdresser;
 import operation.hairdressers.GetHairdressers;
+import operation.hairdressers.UpdateHairdresser;
 import operation.login.Login;
 import operation.servicetypes.GetServiceTypes;
 import operation.users.CreateUser;
@@ -71,7 +73,9 @@ public class Controller {
         if (object instanceof Appointment) {
             return createAppointment(object);
         }
-        
+        if (object instanceof Hairdresser) {
+            return createHairdresser(object);
+        }
 
         return null;
     }
@@ -80,8 +84,11 @@ public class Controller {
         if (object instanceof User) {
             return updateUser(object);
         }
-        if(object instanceof AppointmentDTO){
+        if (object instanceof AppointmentDTO) {
             return updateAppointment(object);
+        }
+        if (object instanceof Hairdresser) {
+            return updateHairdresser(object);
         }
 
         return null;
@@ -146,13 +153,21 @@ public class Controller {
     }
 
     private Object updateAppointment(Object object) throws Exception {
-            operation = new UpdateAppointment();
-            operation.execute(object);
-            return ((UpdateAppointment)operation).getAppointment();
+        operation = new UpdateAppointment();
+        operation.execute(object);
+        return ((UpdateAppointment) operation).getAppointment();
     }
 
-  
+    private Object createHairdresser(Object object) throws Exception {
+        operation = new CreateHairdresser((Hairdresser) (object));
+        operation.execute(object);
+        return ((CreateHairdresser) operation).getHairdresser();
+    }
 
-   
+    private Object updateHairdresser(Object object) throws Exception {
+        operation = new UpdateHairdresser();
+        operation.execute(object);
+        return ((UpdateHairdresser) operation).getHairdresser();
+    }
 
 }

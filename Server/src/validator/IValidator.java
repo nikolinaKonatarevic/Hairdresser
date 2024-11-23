@@ -6,6 +6,7 @@ package validator;
 
 import domain.Appointment;
 import domain.AppointmentItem;
+import domain.Hairdresser;
 import domain.User;
 
 /**
@@ -23,5 +24,7 @@ public interface IValidator {
     public void validateAppointment(Appointment appointment)throws ValidatorException;
 
     public void validateAppointmentItem(AppointmentItem appointmentItem) throws ValidatorException;
+
+    public void validateHairdresser(Hairdresser hairdresser)throws ValidatorException;
 
 }
