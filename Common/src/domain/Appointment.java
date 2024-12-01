@@ -25,7 +25,7 @@ public class Appointment implements GenericEntity {
     private int start_time;
     private int end_time;
     private LocalDateTime createdOn;
-    private BigDecimal totalPrice;
+    private BigDecimal total;
     private AppointmentStatusEnum status;
     private Hairdresser hairdresser;
     private User user;
@@ -40,7 +40,7 @@ public class Appointment implements GenericEntity {
         this.start_time = start_time;
         this.end_time = end_time;
         this.createdOn = createdOn;
-        this.totalPrice = totalPrice;
+        this.total = totalPrice;
         this.status = status;
         this.hairdresser = hairdresser;
         this.user = user;
@@ -64,12 +64,12 @@ public class Appointment implements GenericEntity {
         this.createdOn = createdOn;
     }
 
-    public BigDecimal getTotalPrice() {
-        return totalPrice;
+    public BigDecimal getTotal() {
+        return total;
     }
 
-    public void setTotalPrice(BigDecimal totalPrice) {
-        this.totalPrice = totalPrice;
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     public Hairdresser getHairdresser() {
@@ -121,7 +121,7 @@ public class Appointment implements GenericEntity {
         if (!Objects.equals(this.user, other.user)) {
             return false;
         }
-        if (!Objects.equals(this.totalPrice, other.totalPrice)) {
+        if (!Objects.equals(this.total, other.total)) {
             return false;
         }
         if (!Objects.equals(this.status, other.status)) {
@@ -133,7 +133,7 @@ public class Appointment implements GenericEntity {
 
     @Override
     public String toString() {
-        return "Appointment{" + "id=" + id + ", date=" + date + ", start_time=" + start_time + ", end_time=" + end_time + ", createdOn=" + createdOn + ", totalPrice=" + totalPrice + ", status=" + status + ", hairdresser=" + hairdresser + ", user=" + user + ", items=" + items + '}';
+        return "Appointment{" + "id=" + id + ", date=" + date + ", start_time=" + start_time + ", end_time=" + end_time + ", createdOn=" + createdOn + ", totalPrice=" + total + ", status=" + status + ", hairdresser=" + hairdresser + ", user=" + user + ", items=" + items + '}';
     }
 
     
@@ -156,7 +156,7 @@ public class Appointment implements GenericEntity {
                 .append(start_time).append(",")
                 .append(end_time).append(",'")
                 .append(createdOn).append("', ")
-                .append(totalPrice).append(",")
+                .append(total).append(",")
                 .append(hairdresser.getId()).append(",")
                 .append(user.getId()).append(",'")
                 .append(status).append("'");
@@ -231,7 +231,7 @@ public class Appointment implements GenericEntity {
     @Override
     public String getUpdateSetValues(Object object) {
         Appointment appointment = (Appointment) object;
-        return " date = '" + Date.valueOf(appointment.getDate()) + "', start_time = "+ appointment.getStart_time()+ ", end_time = " + appointment.getEnd_time() + ", total_price ="+ appointment.getTotalPrice()+ ", status = '"+ appointment.getStatus()+ "' " ;
+        return " date = '" + Date.valueOf(appointment.getDate()) + "', start_time = "+ appointment.getStart_time()+ ", end_time = " + appointment.getEnd_time() + ", total_price ="+ appointment.getTotal()+ ", status = '"+ appointment.getStatus()+ "' " ;
     }
 
     public AppointmentStatusEnum getStatus() {
