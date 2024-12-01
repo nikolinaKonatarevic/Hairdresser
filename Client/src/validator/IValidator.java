@@ -30,8 +30,7 @@ public interface IValidator {
 
     public void validateAppointment(int indexH, int indexSH, Date date,  List<ServiceType> items) throws ValidatorException;
 
-    public void validateDate() throws ValidatorException;
-
+ 
     public void validateAppointment(Object selectedItem, Object selectedItem0, Date date) throws ValidatorException;
 
     public void validateNewHairdresser(String firstname, String lastname, String JMBG, Date localDate, HairdresserStatusEnum status) throws ValidatorException;

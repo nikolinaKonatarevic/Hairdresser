@@ -41,8 +41,6 @@ public class FormMainAdmin extends javax.swing.JFrame {
         jMenu3 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
         jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jCheckBoxMenuItem3 = new javax.swing.JCheckBoxMenuItem();
         jCheckBoxMenuItem4 = new javax.swing.JCheckBoxMenuItem();
@@ -82,16 +80,6 @@ public class FormMainAdmin extends javax.swing.JFrame {
         jMenu3.add(jCheckBoxMenuItem2);
 
         jMenuBar1.add(jMenu3);
-
-        jMenu2.setText("Appointment");
-        jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        jCheckBoxMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("View all Appointments");
-        jMenu2.add(jCheckBoxMenuItem1);
-
-        jMenuBar1.add(jMenu2);
 
         jMenu4.setText(" Hairdresser");
         jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -190,7 +178,6 @@ public class FormMainAdmin extends javax.swing.JFrame {
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem3;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem4;
@@ -198,7 +185,6 @@ public class FormMainAdmin extends javax.swing.JFrame {
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem6;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu5;

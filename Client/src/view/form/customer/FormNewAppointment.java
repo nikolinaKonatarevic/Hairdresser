@@ -322,9 +322,6 @@ public class FormNewAppointment extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(btnSave))
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -335,7 +332,10 @@ public class FormNewAppointment extends javax.swing.JFrame {
                                         .addComponent(lblUser, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addComponent(btnMenu, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnSave))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -362,14 +362,18 @@ public class FormNewAppointment extends javax.swing.JFrame {
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         try {
+            //seting table model
             TableModelAppointmentItem model = (TableModelAppointmentItem) tblService.getModel();
             usedServices = model.getServices();
+            
+            //validating appointment
             try {
                 validator.validateAppointment(cmbHairdresser.getSelectedIndex(), cmbStartHour.getSelectedIndex(), datePicker.getDate(), usedServices);
             } catch (ValidatorException ex) {
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Please try again", JOptionPane.ERROR_MESSAGE);
             }
 
+            //creating new Appointment with all atributes from the form
             Appointment appointment = new Appointment();
             appointment.setHairdresser(hairdresser);
             appointment.setCreatedOn(LocalDateTime.now());
@@ -377,11 +381,12 @@ public class FormNewAppointment extends javax.swing.JFrame {
             appointment.setStart_time((int) cmbStartHour.getSelectedItem());
             appointment.setEnd_time((int) (totalDuration + appointment.getStart_time()));
             appointment.setStatus(AppointmentStatusEnum.SCHEDULED);
-            appointment.setTotalPrice(totalPrice);
+            appointment.setTotal(totalPrice);
             appointment.setUser(user);
-
+            
+            //creating list of appointment items
             List<AppointmentItem> ai = new ArrayList<>();
-
+           
             for (ServiceType service : usedServices) {
                 AppointmentItem item = new AppointmentItem();
                 item.setAppointment(appointment);
@@ -392,6 +397,7 @@ public class FormNewAppointment extends javax.swing.JFrame {
 
             appointment.setItems(ai);
 
+            //sending to the Server
             appointment = Communication.getInstance().createAppointment(appointment);
             if (appointment == null) {
                 JOptionPane.showMessageDialog(this, "The system didn't created new appointment", "", JOptionPane.ERROR_MESSAGE);
@@ -447,22 +453,28 @@ public class FormNewAppointment extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemoveActionPerformed
 
     private void btnSelectTimeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelectTimeActionPerformed
+        //preparation of the form
         cmbStartHour.removeAllItems();
         btnEdit.setVisible(true);
-        List<Appointment> appointmentsDate = null;
-        Date dateUnprep = datePicker.getDate();
-        date = dateUnprep.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         cmbHairdresser.setEnabled(false);
         cmbService.setEnabled(false);
         btnAdd.setEnabled(false);
         btnRemove.setEnabled(false);
-
-        hairdresser = (Hairdresser) cmbHairdresser.getSelectedItem();
         datePicker.setEnabled(false);
         cmbStartHour.setVisible(true);
         btnChangeDate.setVisible(true);
         btnSelectTime.setVisible(false);
+        
+        //selected date
+        List<Appointment> appointmentsDate = null;
+        Date dateUnprep = datePicker.getDate();
+        date = dateUnprep.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+       
+        //selected hairdresser
+        hairdresser = (Hairdresser) cmbHairdresser.getSelectedItem();
+       
 
+        //validating date
         try {
             validator.validateDate(date);
         } catch (ValidatorException ex) {
@@ -470,20 +482,29 @@ public class FormNewAppointment extends javax.swing.JFrame {
             return;
         }
 
-        //creating additional list with the same date as selected 
+        //creating additional list of all appointments with the same date as user selected and sorting it
         appointmentsDate = new ArrayList<>();
 
+        
         if (allAppointments != null) {
             for (Appointment appointment : allAppointments) {
                 if (appointment.getDate().equals(date) && appointment.getHairdresser().getId() == hairdresser.getId()) {
                     appointmentsDate.add(appointment);
                 }
             }
-            //System.out.println("btn apDATE "+ appointmentsDate);
             appointmentsDate.sort((a1, a2) -> Integer.compare(a1.getStart_time(), a2.getStart_time()));
         }
+        
+        // finding time slots aveliable for the selected date
         List<Integer> slots = selectTime(appointmentsDate);
 
+        //if there are no slots - information message
+        if(slots.size()==0){
+            JOptionPane.showMessageDialog(this, "No aveliable dates for the selected date. Please select the new date.");
+            return;
+        }
+        
+        //if there are slots, fill in the combo box
         for (Integer slot : slots) {
             cmbStartHour.addItem(slot);
         }
@@ -549,6 +570,7 @@ public class FormNewAppointment extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
+        //preparing form
         setLocationRelativeTo(null);
         setResizable(false);
         lblTotalDuration.setText("");
@@ -560,6 +582,7 @@ public class FormNewAppointment extends javax.swing.JFrame {
         //setting logged in user
         user = Communication.getInstance().getCurrentUser();
         lblUser.setText(user.getFirstname() + " " + user.getLastname());
+        
         validator = new RegularValidator();
         populateComboHairdresser();
         populateComboServiceType();
@@ -618,15 +641,13 @@ public class FormNewAppointment extends javax.swing.JFrame {
     }
 
     private void dateAndTime() {
-
-        //dodati validaciju da ne moze da se izabere datum iz proslosti
         cmbStartHour.setVisible(false);
         btnChangeDate.setVisible(false);
         cmbStartHour.setSelectedIndex(-1);
-
     }
 
     private List<Integer> selectTime(List<Appointment> appointmentsDate) {
+        
         List<Integer> freeSlots = new ArrayList<>();
         int potStart = 9;
         int potEnd;

@@ -55,10 +55,6 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
         this.getParent().setVisible(false);
         appointment = selectedAppointment;
 
-        updatedList = appointment.getItems();
-        copyItems();
-        System.out.println(orgAppointmentItems.size());
-        localDate = appointment.getDate();
         prepareForm();
     }
 
@@ -391,7 +387,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
                     .addComponent(lblUser))
                 .addGap(29, 29, 29)
@@ -522,7 +518,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
                 JOptionPane.showMessageDialog(this, "System couldn't save the appointment"," Not saved", JOptionPane.ERROR_MESSAGE);
                 return;
             } else {
-                JOptionPane.showConfirmDialog(this, "Succesfully changes", "Succesfuly", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showConfirmDialog(this, "System successfully changed the appointment");
 
             }
         } catch (Exception ex) {
@@ -570,7 +566,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
 
         //creating additional list with the same date as selected
         appointmentsDate = new ArrayList<>();
-
+        
         if (allAppointments != null) {
             for (Appointment appointment : allAppointments) {
                 if (appointment.getDate().equals(localDate) && appointment.getHairdresser().getId() == appointment.getHairdresser().getId()) {
@@ -581,7 +577,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
             appointmentsDate.sort((a1, a2) -> Integer.compare(a1.getStart_time(), a2.getStart_time()));
         }
         List<Integer> slots = selectTime(appointmentsDate);
-
+        //finding empty slots
         for (Integer slot : slots) {
             cmbStartHour.addItem(slot);
         }
@@ -676,12 +672,18 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     // End of variables declaration//GEN-END:variables
 
     private void prepareForm() {
-
+        //preparing 2 lists - original and the list we will update
+        updatedList = appointment.getItems();
+        copyItems();
         user = Communication.getInstance().getCurrentUser();
+        
+        
+        localDate = appointment.getDate();
         lblUser.setText(user.getFirstname() + " " + user.getLastname());
         validator = new RegularValidator();
         setLocationRelativeTo(null);
         setResizable(false);
+        
         getAppointments();
         generalInformation();
         dateInformation();
@@ -690,19 +692,21 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private void generalInformation() {
+        // preparing general information
         txtHairdresser.setEnabled(false);
         txtHairdresser.setText(appointment.getHairdresser().getFirstname() + " " + appointment.getHairdresser().getLastname());
         totalDuration = appointment.getEnd_time() - appointment.getStart_time();
         txtTotalDuration.setEnabled(false);
         txtTotalDuration.setText(String.valueOf(totalDuration));
-        totalPrice = appointment.getTotalPrice();
+        totalPrice = appointment.getTotal();
         txtTotalPrice.setEnabled(false);
         txtTotalPrice.setText(totalPrice + "");
 
     }
 
     private void dateInformation() {
-
+ 
+        //preparing date and time information
         ZoneId zoneId = ZoneId.systemDefault();
         ZonedDateTime zonedDateTime = appointment.getDate().atStartOfDay(zoneId);
         Date date = Date.from(zonedDateTime.toInstant());
@@ -721,6 +725,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private void prepareTable() {
+        //preparing table with selected services
         TableModelAppointmentItem model = new TableModelAppointmentItem();
         tblServices.setModel(model);
 
@@ -745,6 +750,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private boolean isServiceAdded(ServiceType service) {
+        //which services are added
         for (AppointmentItem addedAppointment : updatedList) {
             if (addedAppointment.getServiceType().getName().equals(service.getName())) {
                 return true;
@@ -754,6 +760,8 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private void updateAtributes(int i, ServiceType selectedService) {
+        //updating total price and total duration in general information
+       
         if (i == 1) {
 
             totalDuration = totalDuration + selectedService.getDuration();
@@ -788,9 +796,11 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private void checkDateTime() {
+        //saving the selected date
         Date dateUnprep = datePicker.getDate();
         LocalDate date = dateUnprep.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
+        
+        //creating new list with appointments on the date that is selected and for the hairdresser
         appointmentsDate = new ArrayList<>();
 
         if (allAppointments != null) {
@@ -799,9 +809,8 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
                     appointmentsDate.add(a);
                 }
             }
-            //System.out.println("btn apDATE "+ appointmentsDate);
             appointmentsDate.sort((a1, a2) -> Integer.compare(a1.getStart_time(), a2.getStart_time()));
-
+            
             if (chechDate(appointmentsDate)) {
                 prepareServiceType();
             } else {
@@ -829,11 +838,12 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
     }
 
     private boolean chechDate(List<Appointment> appointmentsDate) {
-        // System.out.println("check date + appointmentsdate size "+ appointmentsDate.size());
+        //one appointment - that one
         if (appointmentsDate.size() == 1) {
             return true;
         }
 
+        //the selected appointment is last for that date
         if (appointmentsDate.get(appointmentsDate.size() - 1).getId() == appointment.getId()) {
             if (appointment.getStart_time() + totalDuration <= 21) {
                 return true;
@@ -843,7 +853,7 @@ public class FormAppointmentDetails extends javax.swing.JDialog {
             }
 
         }
-
+        //there are appointments after this one
         for (int i = 0; i < appointmentsDate.size(); i++) {
             if (appointmentsDate.get(i).getId() == appointment.getId()) {
                 if (appointment.getStart_time() + totalDuration <= appointmentsDate.get(i + 1).getStart_time()) {

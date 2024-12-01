@@ -89,7 +89,6 @@ public class RegularValidator implements IValidator {
 
     }
 
-    
     @Override
     public void validateUpdateUser(Long id, String firstname, String lastname, String email, String pass, RoleEnum role) throws ValidatorException {
         if (firstname == null || firstname.isEmpty()) {
@@ -139,19 +138,21 @@ public class RegularValidator implements IValidator {
 
     @Override
     public void validateDeleteUser(long id) throws ValidatorException {
+        List<Appointment> appointments = null;
         try {
-            List<Appointment> appointments = Communication.getInstance().getAllAppointments();
-            if (appointments == null) {
-                return;
-            }
-            for (Appointment a : appointments) {
-                if (a.getUser().getId() == id) {
-                    throw new ValidatorException("System cannot delete this user since has on or more appointments");
-                }
-            }
+            appointments = Communication.getInstance().getAllAppointments();
         } catch (Exception ex) {
             Logger.getLogger(RegularValidator.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (appointments == null) {
+            return;
+        }
+        for (Appointment a : appointments) {
+            if (a.getUser().getId() == id) {
+                throw new ValidatorException("System cannot delete this user since has on or more appointments");
+            }
+        }
+
     }
 
     @Override
@@ -177,11 +178,6 @@ public class RegularValidator implements IValidator {
             throw new ValidatorException("Please select the startHour");
         }
 
-    }
-
-    @Override
-    public void validateDate() throws ValidatorException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -230,19 +226,20 @@ public class RegularValidator implements IValidator {
         if (status == null) {
             throw new ValidatorException("Status field cannot be empty");
         }
-        if(duplicateJMBG(JMBG)){
-                        throw new ValidatorException("Status field cannot be empty");
+        if (duplicateJMBG(JMBG)) {
+            throw new ValidatorException("Status field cannot be empty");
 
         }
     }
 
-    private boolean duplicateJMBG(String JMBG){
+    private boolean duplicateJMBG(String JMBG) {
         try {
             List<Hairdresser> hairdressers = Communication.getInstance().getAllHairdressers();
-            
+
             for (Hairdresser hairdresser : hairdressers) {
-                if(hairdresser.getJMBG().equals(JMBG)) 
+                if (hairdresser.getJMBG().equals(JMBG)) {
                     return true;
+                }
             }
         } catch (Exception ex) {
             Logger.getLogger(RegularValidator.class.getName()).log(Level.SEVERE, null, ex);
@@ -270,24 +267,27 @@ public class RegularValidator implements IValidator {
 
     @Override
     public void validateDeleteHairdresser(long id) throws ValidatorException {
- try {
-            List<Appointment> appointments = Communication.getInstance().getAllAppointments();
-            if (appointments == null) {
-                return;
-            }
-            for (Appointment a : appointments) {
-                if (a.getUser().getId() == id) {
-                    throw new ValidatorException("System cannot delete this hairdresser since he has one or more appointments");
-                }
-            }
+        List<Appointment> appointments = null;
+        try {
+            appointments = Communication.getInstance().getAllAppointments();
+
         } catch (Exception ex) {
             Logger.getLogger(RegularValidator.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if (appointments == null) {
+            return;
+        }
+        for (Appointment a : appointments) {
+            if (a.getHairdresser().getId() == id) {
+                throw new ValidatorException("System cannot delete this hairdresser since he has one or more appointments");
+            }
+        }
+
     }
 
     @Override
     public void validateUpdateHairdresser(Long id, String firstname, String lastname, String JMBG, HairdresserStatusEnum status) throws ValidatorException {
-  if (firstname == null || firstname.isEmpty()) {
+        if (firstname == null || firstname.isEmpty()) {
             throw new ValidatorException("Firstname field cant be empty");
         }
         if (!firstname.matches("[A-Za-z]+")) {

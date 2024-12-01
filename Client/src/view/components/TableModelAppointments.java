@@ -53,7 +53,7 @@ public class TableModelAppointments extends AbstractTableModel{
             case 3: 
                 return a.getCreatedOn();
             case 4: 
-                return a.getTotalPrice();
+                return a.getTotal();
             case 5: 
                 return a.getHairdresser().getFirstname()+ " " + a.getHairdresser().getLastname();
             case 6: 
