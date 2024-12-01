@@ -13,7 +13,7 @@ import javax.swing.table.AbstractTableModel;
  * @author Nikolina
  */
 public class TableModelAdmin extends AbstractTableModel{
-    String[] columnNames = new String[]{"Firstname", "Lastname", "Username", "Password", "Role"};
+    String[] columnNames = new String[]{"Firstname", "Lastname", "Username", "Role"};
     List<User> users; 
 
     public TableModelAdmin (List<User> users){
@@ -51,8 +51,7 @@ public class TableModelAdmin extends AbstractTableModel{
             case 0 -> a.getFirstname();
             case 1 -> a.getLastname();
             case 2 -> a.getEmail();
-            case 3 -> a.getPassword();
-            case 4 -> a.getRole();
+            case 3 -> a.getRole();
             default -> "n/a";
         };
     }

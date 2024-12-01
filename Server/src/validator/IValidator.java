@@ -27,4 +27,8 @@ public interface IValidator {
 
     public void validateHairdresser(Hairdresser hairdresser)throws ValidatorException;
 
+    public void validateConfiguration(String url, String username, String password) throws ValidatorException;
+
+  
+
 }

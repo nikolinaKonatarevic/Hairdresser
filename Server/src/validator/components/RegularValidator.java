@@ -8,6 +8,8 @@ import domain.Appointment;
 import domain.AppointmentItem;
 import domain.Hairdresser;
 import domain.User;
+import java.io.FileInputStream;
+import java.util.Properties;
 import validator.IValidator;
 import validator.ValidatorException;
 
@@ -95,4 +97,13 @@ public class RegularValidator implements IValidator {
         }
     }
 
+    @Override
+    public void validateConfiguration(String url, String username, String password) throws ValidatorException {
+        if(url == null || url.isEmpty()) 
+            throw new ValidatorException("Url field cannot be empty");
+        if(username==null || username.isEmpty())
+             throw new ValidatorException("Username field cannot be empty");
+    }
+
+   
 }
